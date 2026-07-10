@@ -155,10 +155,11 @@ nav.links a:hover{opacity:1;}
 
 /* ===== Hero ===== */
 .hero{
-  position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding:140px 0 60px;overflow:hidden;
+  position:relative;min-height:100svh;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;
+  padding:110px 0 76px;overflow:hidden;
   background:radial-gradient(120% 90% at 50% -10%, var(--maroon-800) 0%, var(--maroon-950) 55%, var(--maroon-950) 100%);
 }
+@media(max-width:900px){.hero{padding:96px 0 90px;}}
 html.light .hero{background:radial-gradient(120% 90% at 50% -10%, #f2ddc0 0%, var(--ivory-50) 55%, var(--ivory-50) 100%);}
 .hero-inner{position:relative;z-index:3;}
 .hero h1{font-size:clamp(44px,8vw,108px);color:var(--fg);}
@@ -166,7 +167,8 @@ html.light .hero{background:radial-gradient(120% 90% at 50% -10%, #f2ddc0 0%, va
 .hero h1 .line span{display:inline-block;transform:translateY(105%);}
 .hero-sub{max-width:520px;margin-top:26px;font-size:16px;line-height:1.7;color:var(--fg-dim);opacity:0;}
 .hero-ctas{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;opacity:0;}
-.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-300);z-index:3;}
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-300);z-index:3;}
+@media(max-width:900px){.hero-scroll{bottom:16px;gap:6px;}.hero-scroll .bar{height:26px;}}
 .hero-scroll .bar{width:1px;height:38px;background:linear-gradient(to bottom, var(--gold-400), transparent);position:relative;overflow:hidden;}
 .hero-scroll .bar i{position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--gold-300);animation:dropline 1.8s ease-in-out infinite;}
 @keyframes dropline{0%{top:-100%;}60%{top:100%;}100%{top:100%;}}
@@ -237,8 +239,15 @@ html.light .svc-img::after{background:linear-gradient(180deg, rgba(21,5,7,.25) 0
 .svc-card .icon svg{width:100%;height:100%;stroke:var(--gold-300);fill:none;stroke-width:1.2;}
 
 /* ===== Gallery (lookbook) ===== */
-.gallery-pin{overflow:hidden;}
-.gallery-track{display:flex;gap:26px;width:max-content;padding:0 32px;}
+.gallery-pin{overflow:visible;}
+.gallery-track{
+  display:flex;gap:26px;width:100%;padding:0 32px 20px;
+  overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
+  cursor:grab;scrollbar-width:none;
+}
+.gallery-track.dragging{cursor:grabbing;scroll-snap-type:none;user-select:none;}
+.gallery-track::-webkit-scrollbar{display:none;}
+.look-card{scroll-snap-align:start;}
 .look-card{
   width:min(72vw,420px);height:520px;flex-shrink:0;position:relative;
   border:1px solid var(--line);overflow:hidden;
@@ -285,7 +294,7 @@ html.light .team-card{background:linear-gradient(160deg,#f4e3c4,#f7efe4);}
 .team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.05) 30%, rgba(21,5,7,.95) 100%);z-index:1;}
 .team-card .info{position:absolute;left:0;right:0;bottom:0;padding:26px;transform:translateY(60%);transition:transform .5s var(--ease-out);}
 .team-card:hover .info{transform:translateY(0);}
-.team-card h3{font-size:22px;color:var(--fg);}
+.team-card h3{font-size:22px;color:var(--gold-300);}
 .team-card span{font-family:var(--mono);font-size:10.5px;color:var(--gold-300);letter-spacing:.12em;display:block;margin:8px 0 12px;}
 .team-card p{font-size:13px;color:var(--fg-dim);line-height:1.6;opacity:0;transition:opacity .4s var(--ease-out) .1s;}
 .team-card:hover p{opacity:1;}
@@ -841,23 +850,26 @@ gsap.from('#svcGrid .svc-card', {
   scrollTrigger:{trigger:'#svcGrid', start:'top 82%'}
 });
 
-/* ---------- Horizontal gallery scroll ---------- */
-if (!reduceMotion && window.innerWidth > 700){
+/* ---------- Horizontal gallery: native gesture scroll + mouse drag ---------- */
+(function(){
   const track = document.getElementById('galleryTrack');
-  function galleryScroll(){
-    const distance = track.scrollWidth - window.innerWidth + 64;
-    gsap.to(track, {
-      x: -distance, ease:'none',
-      scrollTrigger:{
-        trigger:'.gallery-pin', start:'top top', end: ()=> '+=' + (distance*1.15),
-        scrub:1, pin:true, invalidateOnRefresh:true
-      }
-    });
-  }
-  galleryScroll();
-} else {
-  document.getElementById('galleryTrack').style.overflowX = 'auto';
-}
+  if(!track) return;
+  let isDown=false, startX=0, startScroll=0, moved=false;
+  track.addEventListener('mousedown', e=>{
+    isDown=true; moved=false; track.classList.add('dragging');
+    startX=e.pageX; startScroll=track.scrollLeft;
+  });
+  window.addEventListener('mouseup', ()=>{ isDown=false; track.classList.remove('dragging'); });
+  window.addEventListener('mousemove', e=>{
+    if(!isDown) return;
+    const dx = e.pageX - startX;
+    if(Math.abs(dx) > 4) moved = true;
+    track.scrollLeft = startScroll - dx;
+    e.preventDefault();
+  });
+  track.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+  // touch and trackpad horizontal swipe work natively via overflow-x:auto
+})();
 
 /* ---------- Look card tilt ---------- */
 document.querySelectorAll('.look-card').forEach(card=>{
