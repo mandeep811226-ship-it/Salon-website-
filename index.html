@@ -703,16 +703,37 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
           </div>
 
           <div style="margin-top:40px" class="reveal">
-            <div class="field"><label>Name</label><input type="text" placeholder="Your name"></div>
-            <div class="field"><label>Preferred Service</label><input type="text" placeholder="e.g. Bridal Makeup, Balayage"></div>
-            <div class="field"><label>Message</label><textarea placeholder="Tell us your date and what you have in mind"></textarea></div>
-            <a href="https://wa.me/917014415988" class="btn solid magnetic"><span>Send via WhatsApp</span></a>
+            <div class="field"><label>Name</label><input type="text" id="cfName" placeholder="Your name"></div>
+            <div class="field"><label>Preferred Service</label><input type="text" id="cfService" placeholder="e.g. Bridal Makeup, Balayage"></div>
+            <div class="field"><label>Message</label><textarea id="cfMessage" placeholder="Tell us your date and what you have in mind"></textarea></div>
+            <a href="https://wa.me/917014415988" class="btn solid magnetic" id="cfSendBtn"><span>Send via WhatsApp</span></a>
           </div>
         </div>
         <iframe class="map-embed reveal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           src="https://www.google.com/maps?q=Manisha+Tushar+Salon+and+Academy+Dadabari+Kota+Rajasthan&output=embed"></iframe>
       </div>
     </div>
+
+    <script>
+    (function(){
+      var btn = document.getElementById('cfSendBtn');
+      if(!btn) return;
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        var name = document.getElementById('cfName').value.trim();
+        var service = document.getElementById('cfService').value.trim();
+        var message = document.getElementById('cfMessage').value.trim();
+
+        var lines = ['Hi! I\'d like to book an appointment.'];
+        if(name) lines.push('Name: ' + name);
+        if(service) lines.push('Preferred Service: ' + service);
+        if(message) lines.push('Message: ' + message);
+
+        var text = encodeURIComponent(lines.join('\n'));
+        window.open('https://wa.me/917014415988?text=' + text, '_blank');
+      });
+    })();
+    </script>
   </section>
 
 </main>
