@@ -376,6 +376,29 @@ html.light .map-embed{filter:none;}
 .field input,.field textarea{width:100%;background:transparent;border:1px solid var(--line);padding:14px 16px;color:var(--fg);font-family:var(--sans);font-size:14px;}
 .field input:focus,.field textarea:focus{outline:1px solid var(--gold-400);}
 .field textarea{resize:vertical;min-height:100px;}
+.field .optional{text-transform:none;letter-spacing:0;opacity:.7;font-family:var(--sans);}
+
+/* ===== Quote request modal ===== */
+.quote-modal{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;}
+.quote-modal.is-open{display:flex;}
+.quote-modal__backdrop{position:absolute;inset:0;background:rgba(10,3,4,.72);backdrop-filter:blur(3px);opacity:0;transition:opacity .3s ease;}
+.quote-modal.is-open .quote-modal__backdrop{opacity:1;}
+.quote-modal__panel{
+  position:relative;z-index:1;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;
+  background:linear-gradient(160deg,var(--maroon-900),var(--maroon-950));
+  border:1px solid var(--line);padding:36px 32px 32px;
+  transform:translateY(18px) scale(.97);opacity:0;transition:transform .35s cubic-bezier(.16,1,.3,1), opacity .3s ease;
+}
+.quote-modal.is-open .quote-modal__panel{transform:translateY(0) scale(1);opacity:1;}
+.quote-modal__close{position:absolute;top:16px;right:16px;width:34px;height:34px;border:1px solid var(--line);background:transparent;color:var(--fg-dim);font-size:20px;line-height:1;cursor:pointer;transition:color .25s ease, border-color .25s ease, transform .25s ease;}
+.quote-modal__close:hover{color:var(--gold-300);border-color:var(--gold-400);transform:rotate(90deg);}
+.quote-modal__head{margin-bottom:26px;}
+.quote-modal__head .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--gold-300);text-transform:uppercase;margin-bottom:8px;}
+.quote-modal__head h3{font-family:var(--serif);font-size:26px;color:var(--fg);margin-bottom:8px;}
+.quote-modal__head p{font-size:13.5px;color:var(--fg-dim);line-height:1.6;}
+.quote-modal__send{width:100%;justify-content:center;margin-top:6px;}
+@media(max-width:520px){.quote-modal__panel{padding:30px 22px 26px;}}
+body.modal-open{overflow:hidden;}
 
 /* ===== Footer ===== */
 footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
@@ -666,19 +689,19 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
           <h3>Essentials</h3>
           <div class="note">DAY-TO-DAY CARE</div>
           <ul><li>Haircut &amp; Blow Dry</li><li>Manicure or Pedicure</li><li>Threading &amp; Shaping</li><li>Express Facial</li></ul>
-          <a href="https://wa.me/917014415988" class="btn magnetic"><span>Get a Quote</span></a>
+          <button type="button" class="btn magnetic quote-trigger" data-package="Essentials"><span>Get a Quote</span></button>
         </div>
         <div class="price-card featured reveal">
           <h3>Signature</h3>
           <div class="note">MOST BOOKED</div>
           <ul><li>Colour or Balayage</li><li>Keratin or Straightening</li><li>Full Mani-Pedi</li><li>Skin Facial &amp; Spa Add-on</li></ul>
-          <a href="https://wa.me/917014415988" class="btn solid magnetic"><span>Get a Quote</span></a>
+          <button type="button" class="btn solid magnetic quote-trigger" data-package="Signature"><span>Get a Quote</span></button>
         </div>
         <div class="price-card reveal">
           <h3>Bridal Couture</h3>
           <div class="note">FOR THE BIG DAY</div>
           <ul><li>HD / Airbrush Bridal Makeup</li><li>Bridal Hair &amp; Trial Sitting</li><li>Nail Extensions &amp; Art</li><li>Full Pre-Wedding Package</li></ul>
-          <a href="https://wa.me/917014415988" class="btn magnetic"><span>Get a Quote</span></a>
+          <button type="button" class="btn magnetic quote-trigger" data-package="Bridal Couture"><span>Get a Quote</span></button>
         </div>
       </div>
     </div>
@@ -760,6 +783,12 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
     </div>
 
     <script>
+    // Shared helper: build a WhatsApp deep link from message lines and open it.
+    window.sendWhatsAppMessage = function(lines){
+      var text = encodeURIComponent(lines.filter(Boolean).join('\n'));
+      window.open('https://wa.me/917014415988?text=' + text, '_blank');
+    };
+
     (function(){
       var btn = document.getElementById('cfSendBtn');
       if(!btn) return;
@@ -769,13 +798,12 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
         var service = document.getElementById('cfService').value.trim();
         var message = document.getElementById('cfMessage').value.trim();
 
-        var lines = ['Hi! I\'d like to book an appointment.'];
-        if(name) lines.push('Name: ' + name);
-        if(service) lines.push('Preferred Service: ' + service);
-        if(message) lines.push('Message: ' + message);
-
-        var text = encodeURIComponent(lines.join('\n'));
-        window.open('https://wa.me/917014415988?text=' + text, '_blank');
+        window.sendWhatsAppMessage([
+          'Hi! I\'d like to book an appointment.',
+          name ? 'Name: ' + name : '',
+          service ? 'Preferred Service: ' + service : '',
+          message ? 'Message: ' + message : ''
+        ]);
       });
     })();
     </script>
@@ -1045,5 +1073,93 @@ if (!reduceMotion){
 /* ---------- Refresh ScrollTrigger after full load ---------- */
 window.addEventListener('load', ()=> ScrollTrigger.refresh());
 </script>
+<div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
+  <div class="quote-modal__backdrop" id="quoteModalBackdrop"></div>
+  <div class="quote-modal__panel">
+    <button type="button" class="quote-modal__close" id="quoteModalClose" aria-label="Close">&times;</button>
+    <div class="quote-modal__head">
+      <div class="eyebrow" id="quoteModalEyebrow">Package</div>
+      <h3 id="quoteModalTitle">Get a Quote</h3>
+      <p>Tell us a bit about what you have in mind — we'll confirm pricing and availability on WhatsApp.</p>
+    </div>
+    <div class="quote-modal__body">
+      <div class="field"><label>Service / Package</label><input type="text" id="qmService" placeholder="e.g. Signature"></div>
+      <div class="field"><label>Name</label><input type="text" id="qmName" placeholder="Your name"></div>
+      <div class="field"><label>Appointment Date</label><input type="date" id="qmDate"></div>
+      <div class="field"><label>Message <span class="optional">(optional)</span></label><textarea id="qmMessage" placeholder="Anything else we should know?"></textarea></div>
+    </div>
+    <button type="button" class="btn solid magnetic quote-modal__send" id="qmSendBtn"><span>Send via WhatsApp</span></button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var modal = document.getElementById('quoteModal');
+  var backdrop = document.getElementById('quoteModalBackdrop');
+  var closeBtn = document.getElementById('quoteModalClose');
+  var eyebrow = document.getElementById('quoteModalEyebrow');
+  var serviceInput = document.getElementById('qmService');
+  var nameInput = document.getElementById('qmName');
+  var dateInput = document.getElementById('qmDate');
+  var messageInput = document.getElementById('qmMessage');
+  var sendBtn = document.getElementById('qmSendBtn');
+  var lastFocused = null;
+
+  function openModal(pkg){
+    lastFocused = document.activeElement;
+    eyebrow.textContent = pkg + ' Package';
+    serviceInput.value = pkg;
+    nameInput.value = '';
+    dateInput.value = '';
+    messageInput.value = '';
+    modal.classList.add('is-open');
+    document.body.classList.add('modal-open');
+    setTimeout(function(){ nameInput.focus(); }, 300);
+  }
+
+  function closeModal(){
+    modal.classList.remove('is-open');
+    document.body.classList.remove('modal-open');
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.quote-trigger').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      openModal(btn.getAttribute('data-package') || 'Custom');
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+  });
+
+  function formatDate(iso){
+    if (!iso) return '';
+    var parts = iso.split('-'); // YYYY-MM-DD, avoid timezone-shift bugs from Date parsing
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var y = parts[0], m = parseInt(parts[1],10)-1, d = parseInt(parts[2],10);
+    return d + ' ' + months[m] + ' ' + y;
+  }
+
+  sendBtn.addEventListener('click', function(){
+    var service = serviceInput.value.trim();
+    var name = nameInput.value.trim();
+    var date = formatDate(dateInput.value);
+    var message = messageInput.value.trim();
+
+    window.sendWhatsAppMessage([
+      'Hi! I\'d like to get a quote.',
+      service ? 'Package: ' + service : '',
+      name ? 'Name: ' + name : '',
+      date ? 'Preferred Date: ' + date : '',
+      message ? 'Message: ' + message : ''
+    ]);
+    closeModal();
+  });
+})();
+</script>
+
 </body>
 </html>
