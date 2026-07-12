@@ -275,6 +275,32 @@ html.light .hero{background:var(--maroon-950);}
 
 /* marquee strip */
 .marquee-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-top:32px;overflow:hidden;position:relative;z-index:3;}
+
+.hero-proof{position:relative;z-index:3;margin-top:36px;padding-bottom:110px;}
+.hero-proof-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-300);margin-bottom:18px;opacity:.9;}
+.hero-proof-strip{display:flex;gap:22px;align-items:flex-start;}
+.polaroid{
+  background:var(--ivory-50);padding:8px 8px 14px;border-radius:2px;
+  box-shadow:0 14px 30px rgba(0,0,0,.45);width:118px;flex:0 0 auto;
+  opacity:0;transform:translateY(28px) scale(.92);
+}
+.polaroid img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border:1px solid rgba(21,5,7,.08);}
+.polaroid figcaption{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--maroon-900,#3a1216);text-align:center;margin-top:8px;text-transform:uppercase;}
+.polaroid.p1{margin-top:0;}
+.polaroid.p2{margin-top:14px;}
+.polaroid.p3{margin-top:0;}
+.polaroid.p4{margin-top:10px;}
+
+@media(max-width:900px){
+  .hero-proof{margin-top:28px;padding-bottom:90px;}
+  .hero-proof-strip{gap:14px;flex-wrap:wrap;justify-content:center;}
+  .polaroid{width:42vw;max-width:150px;}
+  .polaroid.p2,.polaroid.p4{margin-top:16px;}
+}
+@media(max-width:420px){
+  .polaroid{width:40vw;}
+}
+body.no-gsap-fallback .polaroid{opacity:1 !important;transform:none !important;}
 .marquee-track{display:flex;gap:56px;white-space:nowrap;width:max-content;animation:marquee 26s linear infinite;}
 .marquee-track span{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--fg-dim);display:flex;align-items:center;gap:14px;}
 .marquee-track span b{color:var(--gold-300);}
@@ -793,6 +819,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       </div>
     </div>
 
+    <div class="hero-proof" id="heroProof">
+      <div class="wrap">
+        <div class="hero-proof-eyebrow">Step inside the studio</div>
+        <div class="hero-proof-strip">
+          <figure class="polaroid p1"><img src="images/proof-outside.jpg" alt="Manisha Tushar Salon &amp; Academy storefront in Dadabari, Kota" loading="lazy" width="480" height="600"><figcaption>The storefront</figcaption></figure>
+          <figure class="polaroid p2"><img src="images/proof-interior.jpg" alt="Wash stations inside Manisha Tushar Salon" loading="lazy" width="480" height="600"><figcaption>Wash &amp; styling floor</figcaption></figure>
+          <figure class="polaroid p3"><img src="images/proof-reception.jpg" alt="Reception counter at Manisha Tushar Salon &amp; Academy" loading="lazy" width="480" height="600"><figcaption>Reception</figcaption></figure>
+          <figure class="polaroid p4"><img src="images/proof-board.jpg" alt="Manisha Tushar Salon &amp; Academy signboard" loading="lazy" width="480" height="600"><figcaption>Find us in Dadabari</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
     <div class="hero-scroll"><span>SCROLL</span><div class="bar"><i></i></div></div>
   </section>
 
@@ -1213,6 +1251,13 @@ function playHero(){
     .to('.hero h1 .line span', {y:'0%', duration:1, stagger:.12, ease:'power4.out'}, '-=1')
     .to('#heroSub', {opacity:1, duration:.8, ease:'power2.out'}, '-=.5')
     .to('#heroCtas', {opacity:1, duration:.8, ease:'power2.out'}, '-=.6');
+
+  const proofRotations = {p1:-4, p2:3, p3:-2, p4:5};
+  document.querySelectorAll('#heroProof .polaroid').forEach((card, i)=>{
+    const key = [...card.classList].find(c => proofRotations.hasOwnProperty(c));
+    const rot = proofRotations[key] ?? 0;
+    tl.to(card, {opacity:1, y:0, scale:1, rotation:rot, duration:.9, ease:'back.out(1.6)'}, `-=${i===0 ? .3 : .78}`);
+  });
 }
 
 /* ---------- Header scroll state ---------- */
