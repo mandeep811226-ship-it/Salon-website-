@@ -325,16 +325,6 @@ section{position:relative;z-index:2;padding:140px 0;}
 .stat b{font-family:var(--serif);font-size:40px;color:var(--gold-300);display:block;}
 .stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--fg-dim);text-transform:uppercase;display:block;margin-top:8px;}
 
-.timeline{margin-top:100px;position:relative;}
-.tl-line{position:absolute;top:9px;left:0;right:0;height:1px;background:var(--line);}
-.tl-line i{position:absolute;top:-1.5px;left:0;height:4px;background:var(--gold-400);width:0;}
-.tl-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
-@media(max-width:800px){.tl-row{grid-template-columns:1fr;gap:44px;}.tl-line{display:none;}}
-.tl-item{position:relative;padding-top:28px;}
-.tl-item::before{content:'';position:absolute;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--gold-400);}
-.tl-item b{font-family:var(--serif);font-size:18px;display:block;margin-bottom:8px;}
-.tl-item p{color:var(--fg-dim);font-size:13.5px;line-height:1.6;}
-
 /* ===== Services: category rail + flip cards ===== */
 .svc-rail{display:flex;gap:10px;margin-bottom:44px;flex-wrap:wrap;}
 .svc-rail button{
@@ -852,16 +842,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
           </div>
         </div>
       </div>
-
-      <div class="timeline">
-        <div class="tl-line"><i id="tlBar"></i></div>
-        <div class="tl-row">
-          <div class="tl-item reveal"><b>Chair One</b><p>A single styling chair in Dadabari, built on repeat clients and word of mouth.</p></div>
-          <div class="tl-item reveal"><b>Full Salon Floor</b><p>Hair, nails, skin and bridal services united into one atelier experience.</p></div>
-          <div class="tl-item reveal"><b>The Academy Opens</b><p>Now hiring and training beauticians and hairdressers, right on the salon floor.</p></div>
-          <div class="tl-item reveal"><b>347 Reviews &amp; Counting</b><p>A 4.7★ reputation built one appointment, one bride, at a time.</p></div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -1323,12 +1303,6 @@ document.querySelectorAll('[data-count]').forEach(el=>{
       });
     }
   });
-});
-
-/* ---------- Timeline bar ---------- */
-gsap.to('#tlBar', {
-  width:'100%', duration:1.4, ease:'power2.out',
-  scrollTrigger:{trigger:'.timeline', start:'top 75%'}
 });
 
 /* ---------- Services: category rail + flip cards ---------- */
