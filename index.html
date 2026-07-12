@@ -292,12 +292,14 @@ html.light .hero{background:var(--maroon-950);}
 .polaroid.p2{margin-top:14px;}
 .polaroid.p3{margin-top:0;}
 .polaroid.p4{margin-top:10px;}
+.polaroid.p5{margin-top:4px;}
+.polaroid.p6{margin-top:16px;}
 
 @media(max-width:900px){
   .hero-proof{margin-top:28px;padding-bottom:90px;}
   .hero-proof-strip{gap:14px;flex-wrap:wrap;justify-content:center;}
   .polaroid{width:42vw;max-width:150px;}
-  .polaroid.p2,.polaroid.p4{margin-top:16px;}
+  .polaroid.p2,.polaroid.p4,.polaroid.p6{margin-top:16px;}
 }
 @media(max-width:420px){
   .polaroid{width:40vw;}
@@ -908,6 +910,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
           <figure class="polaroid p2"><img src="images/proof-interior.jpg" alt="Wash stations inside Manisha Tushar Salon" loading="lazy" width="480" height="600"><figcaption>Wash &amp; styling floor</figcaption></figure>
           <figure class="polaroid p3"><img src="images/proof-reception.jpg" alt="Reception counter at Manisha Tushar Salon &amp; Academy" loading="lazy" width="480" height="600"><figcaption>Reception</figcaption></figure>
           <figure class="polaroid p4"><img src="images/proof-board.jpg" alt="Manisha Tushar Salon &amp; Academy signboard" loading="lazy" width="480" height="600"><figcaption>Find us in Dadabari</figcaption></figure>
+          <figure class="polaroid p5"><img src="images/proof-academy-training.jpg" alt="Academy trainees practicing hair styling on mannequin heads at Manisha Tushar Salon" loading="lazy" width="480" height="600"><figcaption>Academy in session</figcaption></figure>
+          <figure class="polaroid p6"><img src="images/proof-studio-event.jpg" alt="Press interview and celebration event at Manisha Tushar Salon &amp; Academy" loading="lazy" width="480" height="600"><figcaption>Studio celebrations</figcaption></figure>
         </div>
       </div>
     </div>
@@ -1577,7 +1581,7 @@ ScrollTrigger.create({
 (function(){
   const cards = gsap.utils.toArray('#heroProof .polaroid');
   if (!cards.length) return;
-  const proofRotations = {p1:-4, p2:3, p3:-2, p4:5};
+  const proofRotations = {p1:-4, p2:3, p3:-2, p4:5, p5:-3, p6:4};
   cards.forEach((card, i)=>{
     const key = [...card.classList].find(c => proofRotations.hasOwnProperty(c));
     const rot = proofRotations[key] ?? 0;
