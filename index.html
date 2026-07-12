@@ -282,7 +282,9 @@ html.light .hero{background:var(--maroon-950);}
 .polaroid{
   background:var(--ivory-50);padding:8px 8px 14px;border-radius:2px;
   box-shadow:0 14px 30px rgba(0,0,0,.45);width:118px;flex:0 0 auto;
-  opacity:0;transform:translateY(28px) scale(.92);
+  opacity:0;transform:translateY(0);
+  clip-path:inset(100% 0 0 0);
+  will-change:clip-path,transform,opacity;
 }
 .polaroid img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border:1px solid rgba(21,5,7,.08);}
 .polaroid figcaption{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--maroon-900,#3a1216);text-align:center;margin-top:8px;text-transform:uppercase;}
@@ -300,7 +302,13 @@ html.light .hero{background:var(--maroon-950);}
 @media(max-width:420px){
   .polaroid{width:40vw;}
 }
-body.no-gsap-fallback .polaroid{opacity:1 !important;transform:none !important;}
+body.no-gsap-fallback .polaroid{opacity:1 !important;transform:none !important;clip-path:none !important;}
+body.no-gsap-fallback .flip-card,
+body.no-gsap-fallback .price-card,
+body.no-gsap-fallback .process-card,
+body.no-gsap-fallback .team-card,
+body.no-gsap-fallback .look-card{opacity:1 !important;transform:none !important;filter:none !important;clip-path:none !important;}
+body.no-gsap-fallback .look-card .bg img{transform:none !important;}
 .marquee-track{display:flex;gap:56px;white-space:nowrap;width:max-content;animation:marquee 26s linear infinite;}
 .marquee-track span{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--fg-dim);display:flex;align-items:center;gap:14px;}
 .marquee-track span b{color:var(--gold-300);}
@@ -335,7 +343,7 @@ section{position:relative;z-index:2;padding:140px 0;}
 }
 .svc-rail button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .svc-rail button.active{border-color:transparent;box-shadow:0 14px 30px -14px rgba(0,0,0,.55);}
-.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;perspective:1600px;}
 @media(max-width:900px){.svc-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:560px){.svc-grid{grid-template-columns:1fr;}}
 .flip-card{perspective:1400px;height:400px;transition:opacity .4s var(--ease-out), transform .4s var(--ease-out);}
@@ -380,7 +388,7 @@ section{position:relative;z-index:2;padding:140px 0;}
 .look-card h3{font-size:30px;color:#fff;margin-top:8px;}
 .look-card p{color:rgba(255,255,255,.7);font-size:13px;margin-top:10px;max-width:260px;}
 .look-card .bg{background:linear-gradient(155deg,#5a1f26,#150507);}
-.look-card .bg img{width:100%;height:100%;object-fit:cover;opacity:.85;mix-blend-mode:luminosity;}
+.look-card .bg img{width:100%;height:118%;object-fit:cover;opacity:.85;mix-blend-mode:luminosity;transform:scale(1.02);}
 .look-card .bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.05) 0%, rgba(21,5,7,.35) 55%, rgba(21,5,7,.92) 100%);}
 .look-1 .bg{background:linear-gradient(155deg,#5a1f26,#150507);}
 .look-1 .bg img{mix-blend-mode:normal;filter:sepia(.25) saturate(1.3) hue-rotate(-8deg);}
@@ -406,7 +414,7 @@ section{position:relative;z-index:2;padding:140px 0;}
 .test-card .who span{font-family:var(--mono);font-size:10.5px;color:var(--fg-dim);}
 
 /* ===== Team ===== */
-.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;perspective:1400px;}
 @media(max-width:1000px){.team-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:560px){.team-grid{grid-template-columns:1fr;}}
 .team-card{position:relative;border:1px solid var(--line);padding-top:120%;overflow:hidden;background:linear-gradient(160deg,var(--maroon-800),var(--maroon-950));}
@@ -1231,14 +1239,50 @@ function playHero(){
     .to('.hero h1 .line span', {y:'0%', duration:1, stagger:.12, ease:'power4.out'}, '-=1')
     .to('#heroSub', {opacity:1, duration:.8, ease:'power2.out'}, '-=.5')
     .to('#heroCtas', {opacity:1, duration:.8, ease:'power2.out'}, '-=.6');
+  // Studio polaroids are handled by their own repeatable ScrollTrigger
+  // animation (see "Hero proof" block below) so they replay every time
+  // they're scrolled into view, not just once on first load.
+}
 
+/* ---------- Hero: replay text reveal whenever you scroll back up into it ----------
+   The very first play happens via playHero() above (tied to the loader).
+   This ScrollTrigger only re-fires the same reveal when the hero re-enters
+   view from below, i.e. scrolling back up the page — first-load is
+   deliberately excluded on the forward direction to avoid a double-play. */
+ScrollTrigger.create({
+  trigger:'.hero', start:'top top',
+  onEnterBack:()=>{
+    if (reduceMotion) return;
+    gsap.fromTo('.hero h1 .line span', {y:'105%'}, {y:'0%', duration:1, stagger:.12, ease:'power4.out'});
+    gsap.fromTo('#heroSub', {opacity:0, y:16}, {opacity:1, y:0, duration:.8, ease:'power2.out', delay:.3});
+    gsap.fromTo('#heroCtas', {opacity:0, y:16}, {opacity:1, y:0, duration:.8, ease:'power2.out', delay:.42});
+  }
+});
+
+/* ---------- Hero proof: vertical column slider (studio images) ----------
+   Each polaroid is masked with clip-path and lifts into view column by
+   column, like a blind rising. Runs every time #heroProof crosses the
+   trigger point, forward AND backward (toggleActions handles both). */
+(function(){
+  const cards = gsap.utils.toArray('#heroProof .polaroid');
+  if (!cards.length) return;
   const proofRotations = {p1:-4, p2:3, p3:-2, p4:5};
-  document.querySelectorAll('#heroProof .polaroid').forEach((card, i)=>{
+  cards.forEach((card, i)=>{
     const key = [...card.classList].find(c => proofRotations.hasOwnProperty(c));
     const rot = proofRotations[key] ?? 0;
-    tl.to(card, {opacity:1, y:0, scale:1, rotation:rot, duration:.9, ease:'back.out(1.6)'}, `-=${i===0 ? .3 : .78}`);
+    gsap.fromTo(card,
+      {opacity:0, clipPath:'inset(100% 0 0 0)', y:30, rotation:0},
+      {
+        opacity:1, clipPath:'inset(0% 0 0 0)', y:0, rotation:rot,
+        duration:.9, ease:'power3.out', delay:i*0.12,
+        scrollTrigger:{
+          trigger:'#heroProof', start:'top 85%',
+          toggleActions:'restart none none reverse'
+        }
+      }
+    );
   });
-}
+})();
 
 /* ---------- Header scroll state ---------- */
 const header = document.getElementById('siteHeader');
@@ -1276,33 +1320,67 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
   btn.addEventListener('mouseleave', ()=> gsap.to(btn, {x:0, y:0, duration:.5, ease:'elastic.out(1,.4)'}));
 });
 
-/* ---------- Generic scroll reveals ---------- */
+/* ---------- Generic scroll reveals ----------
+   toggleActions:'restart none none reverse' means: play forward every time
+   the element is scrolled down into view, and play back out every time it's
+   scrolled back up past its start point — so it's never a one-shot. Cards
+   that get a dedicated signature animation (flip/price/process/team/look)
+   are skipped here since they're handled in their own blocks below. */
 gsap.utils.toArray('.reveal').forEach(el=>{
-  gsap.to(el, {
-    opacity:1, y:0, duration:1, ease:'power3.out',
-    scrollTrigger:{trigger:el, start:'top 88%'}
-  });
+  if (el.matches('.flip-card, .price-card, .process-card')) return;
+  gsap.fromTo(el,
+    {opacity:0, y:32},
+    {
+      opacity:1, y:0, duration:1, ease:'power3.out',
+      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'restart none none reverse'}
+    }
+  );
 });
 
 /* ---------- Brushstroke draw ---------- */
 document.querySelectorAll('.stroke path').forEach(p=>{
-  gsap.to(p, {strokeDashoffset:0, duration:1.1, ease:'power2.out',
-    scrollTrigger:{trigger:p, start:'top 85%'}});
+  gsap.fromTo(p, {strokeDashoffset:600}, {
+    strokeDashoffset:0, duration:1.1, ease:'power2.out',
+    scrollTrigger:{trigger:p, start:'top 85%', toggleActions:'restart none none reverse'}
+  });
 });
 
-/* ---------- Counters ---------- */
+/* ---------- Counters (replay every time, count down on the way back up) ---------- */
+function animateCounter(el, target, decimals){
+  gsap.killTweensOf(el._counterProxy || {});
+  const proxy = {v: parseFloat(el.textContent) || 0};
+  el._counterProxy = proxy;
+  gsap.to(proxy, {
+    v:target, duration:1.6, ease:'power2.out',
+    onUpdate:()=>{ el.textContent = proxy.v.toFixed(decimals); }
+  });
+}
 document.querySelectorAll('[data-count]').forEach(el=>{
   const target = parseFloat(el.dataset.count);
   const decimals = parseInt(el.dataset.decimals || '0');
   ScrollTrigger.create({
-    trigger: el, start:'top 90%', once:true,
-    onEnter:()=>{
-      gsap.to({v:0}, {
-        v:target, duration:1.8, ease:'power2.out',
-        onUpdate:function(){ el.textContent = this.targets()[0].v.toFixed(decimals); }
-      });
-    }
+    trigger: el, start:'top 90%',
+    onEnter:()=> animateCounter(el, target, decimals),
+    onEnterBack:()=> animateCounter(el, target, decimals),
+    onLeaveBack:()=>{ el.textContent = (0).toFixed(decimals); }
   });
+});
+
+/* ---------- Services: layer-transformation reveal ----------
+   Cards fly in from a stacked, receding-in-depth position AND alternate
+   left/right horizontal entry per column — like layers sliding in from
+   opposite sides and settling flat. Replays every time, both scroll
+   directions (toggleActions handles the reverse-out on scroll-up). */
+gsap.utils.toArray('.flip-card').forEach((card, i)=>{
+  const fromSide = i % 2 === 0 ? -90 : 90;
+  gsap.fromTo(card,
+    {opacity:0, x:fromSide, y:50, z:-180, rotateX:-14, rotateY:fromSide>0?10:-10, scale:.86, transformPerspective:1000},
+    {
+      opacity:1, x:0, y:0, z:0, rotateX:0, rotateY:0, scale:1,
+      duration:1, ease:'power3.out', delay:(i%4)*0.1,
+      scrollTrigger:{trigger:card, start:'top 88%', toggleActions:'restart none none reverse'}
+    }
+  );
 });
 
 /* ---------- Services: category rail + flip cards ---------- */
@@ -1357,6 +1435,31 @@ document.querySelectorAll('.flip-card').forEach(card=>{
   // touch and trackpad horizontal swipe work natively via overflow-x:auto
 })();
 
+/* ---------- Lookbook: immersive reveal + parallax storytelling ----------
+   Cards alternate entering from left/right (horizontal) while rising
+   slightly (vertical), staggered — repeatable both directions. The photo
+   inside each card ALSO drifts vertically at a different speed than the
+   card as the page scrolls (a continuous scrub tied 1:1 to scroll
+   position) for a true parallax storytelling feel, forward AND backward. */
+gsap.utils.toArray('.look-card').forEach((card, i)=>{
+  const fromSide = i % 2 === 0 ? -70 : 70;
+  gsap.fromTo(card,
+    {opacity:0, x:fromSide, y:40, scale:.88},
+    {
+      opacity:1, x:0, y:0, scale:1, duration:1, ease:'power3.out', delay:(i%4)*0.08,
+      scrollTrigger:{trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'}
+    }
+  );
+  const img = card.querySelector('.bg img');
+  if (img && !reduceMotion){
+    gsap.set(img, {yPercent:0});
+    gsap.to(img, {
+      yPercent:-10, ease:'none',
+      scrollTrigger:{trigger:'#gallery', start:'top bottom', end:'bottom top', scrub:0.6}
+    });
+  }
+});
+
 /* ---------- Look card tilt ---------- */
 document.querySelectorAll('.look-card').forEach(card=>{
   card.addEventListener('mousemove', e=>{
@@ -1368,10 +1471,58 @@ document.querySelectorAll('.look-card').forEach(card=>{
   card.addEventListener('mouseleave', ()=> gsap.to(card, {rotateX:0, rotateY:0, duration:.6}));
 });
 
-/* ---------- Team card stagger ---------- */
-gsap.from('.team-card', {
-  opacity:0, y:50, duration:.9, stagger:.12, ease:'power3.out',
-  scrollTrigger:{trigger:'.team-grid', start:'top 82%'}
+/* ---------- Team: exploding-assembly reveal ----------
+   Each card starts flung outward from the grid's center (like a shattered
+   piece) blurred and rotated, then converges into its resting grid slot.
+   Reverses back outward when scrolled past going back up, and reassembles
+   every time it's re-entered — never a one-shot. */
+(function(){
+  const cards = gsap.utils.toArray('.team-card');
+  const n = cards.length || 1;
+  cards.forEach((card, i)=>{
+    const angle = (i / n) * Math.PI * 2;
+    const dx = Math.cos(angle) * 240;
+    const dy = Math.sin(angle) * 170;
+    gsap.fromTo(card,
+      {opacity:0, x:dx, y:dy, scale:.4, rotation:(i%2===0 ? -28 : 28), filter:'blur(6px)'},
+      {
+        opacity:1, x:0, y:0, scale:1, rotation:0, filter:'blur(0px)',
+        duration:1.1, ease:'power3.out', delay:i*0.08,
+        scrollTrigger:{trigger:'.team-grid', start:'top 82%', toggleActions:'restart none none reverse'}
+      }
+    );
+  });
+})();
+
+/* ---------- Pricing: immersive reveal ----------
+   Each package card rises up from behind a curtain (clip-path wipe) while
+   coming into focus from a blur, rather than a plain fade — repeats every
+   time the card crosses into or out of view. */
+gsap.utils.toArray('.price-card').forEach((card, i)=>{
+  gsap.fromTo(card,
+    {opacity:0, y:70, scale:.92, clipPath:'inset(0% 0 100% 0)', filter:'blur(8px)'},
+    {
+      opacity:1, y:0, scale:1, clipPath:'inset(0% 0 0% 0)', filter:'blur(0px)',
+      duration:1.1, ease:'power3.out', delay:i*0.15,
+      scrollTrigger:{trigger:card, start:'top 88%', toggleActions:'restart none none reverse'}
+    }
+  );
+});
+
+/* ---------- Process: immersive zoom ---------- */
+gsap.utils.toArray('.process-card').forEach((card, i)=>{
+  const num = card.querySelector('.n');
+  const st = {trigger:card, start:'top 88%', toggleActions:'restart none none reverse'};
+  gsap.fromTo(card, {opacity:0, scale:.82}, {opacity:1, scale:1, duration:.9, ease:'power3.out', scrollTrigger:st});
+  if (num){
+    gsap.fromTo(num,
+      {scale:2.6, opacity:0, filter:'blur(10px)'},
+      {
+        scale:1, opacity:.55, filter:'blur(0px)', duration:.9, ease:'power3.out', delay:.15,
+        scrollTrigger:{trigger:card, start:'top 88%', toggleActions:'restart none none reverse'}
+      }
+    );
+  }
 });
 
 /* ---------- FAQ accordion ---------- */
@@ -1677,23 +1828,4 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
     return d + ' ' + months[m] + ' ' + y;
   }
 
-  sendBtn.addEventListener('click', function(){
-    var service = serviceInput.value.trim();
-    var name = nameInput.value.trim();
-    var date = formatDate(dateInput.value);
-    var message = messageInput.value.trim();
-
-    window.sendWhatsAppMessage([
-      'Hi! I\'d like to get a quote.',
-      service ? 'Package: ' + service : '',
-      name ? 'Name: ' + name : '',
-      date ? 'Preferred Date: ' + date : '',
-      message ? 'Message: ' + message : ''
-    ]);
-    closeModal();
-  });
-})();
-</script>
-
-</body>
-</html>
+  send
