@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manisha Tushar Salon &amp; Academy — Kota</title>
-<meta name="description" content="Manisha Tushar Salon &amp; Academy — luxury hair, bridal, nail and skin artistry in Dadabari, Kota. 4.8★ across 521 reviews. Admissions open for our hairdressing academy.">
+<meta name="description" content="Manisha Tushar Salon &amp; Academy — unisex hair, bridal, nail and skin artistry in Dadabari, Kota. 4.7★ across 347 reviews. Training and hiring through our in-house academy.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -237,27 +237,35 @@ section{position:relative;z-index:2;padding:140px 0;}
 .tl-item b{font-family:var(--serif);font-size:18px;display:block;margin-bottom:8px;}
 .tl-item p{color:var(--fg-dim);font-size:13.5px;line-height:1.6;}
 
-/* ===== Services ===== */
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
-@media(max-width:900px){.svc-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:600px){.svc-grid{grid-template-columns:1fr;}}
-.svc-card{
-  background:var(--bg);padding:40px 30px;min-height:320px;position:relative;overflow:hidden;
-  transition:background .4s var(--ease-out);
+/* ===== Services: category rail + flip cards ===== */
+.svc-rail{display:flex;gap:10px;margin-bottom:44px;flex-wrap:wrap;}
+.svc-rail button{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 18px;border:1px solid var(--line);background:transparent;
+  font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--fg);cursor:pointer;transition:.35s var(--ease-out);
 }
-.svc-card:hover{background:var(--bg-alt);}
-.svc-img{position:absolute;inset:0;z-index:0;}
-.svc-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) brightness(.55);transition:filter .5s var(--ease-out), transform .6s var(--ease-out);transform:scale(1.04);}
-.svc-card:hover .svc-img img{filter:grayscale(0) brightness(.4);transform:scale(1.1);}
-.svc-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.15) 0%, var(--maroon-950) 92%);}
-html.light .svc-img::after{background:linear-gradient(180deg, rgba(21,5,7,.25) 0%, var(--ivory-50) 92%);}
-.svc-card .num,.svc-card h3,.svc-card ul,.svc-card .icon{position:relative;z-index:2;}
-.svc-card .num{font-family:var(--mono);font-size:11px;color:var(--gold-300);}
-.svc-card h3{font-size:26px;margin-top:100px;color:#fff;}
-.svc-card ul{margin-top:18px;list-style:none;color:rgba(255,255,255,.75);font-size:13.5px;line-height:2;opacity:0;max-height:0;overflow:hidden;transition:opacity .4s var(--ease-out), max-height .4s var(--ease-out), margin .4s var(--ease-out);}
-.svc-card:hover ul{opacity:1;max-height:220px;margin-top:18px;}
-.svc-card .icon{position:absolute;right:26px;top:34px;width:34px;height:34px;opacity:.85;}
-.svc-card .icon svg{width:100%;height:100%;stroke:var(--gold-300);fill:none;stroke-width:1.2;}
+.svc-rail button .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.svc-rail button.active{border-color:transparent;box-shadow:0 14px 30px -14px rgba(0,0,0,.55);}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+@media(max-width:900px){.svc-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.svc-grid{grid-template-columns:1fr;}}
+.flip-card{perspective:1400px;height:400px;transition:opacity .4s var(--ease-out), transform .4s var(--ease-out);}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s var(--ease-out);}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);padding:28px;display:flex;flex-direction:column;cursor:pointer;}
+.flip-front{justify-content:space-between;color:#fff;}
+.flip-front .icon-wrap{width:48px;height:48px;border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;}
+.flip-front .icon-wrap svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.3;}
+.flip-front h3{color:#fff;font-size:25px;margin-top:auto;}
+.flip-front .tap-hint{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:8px;}
+.flip-back{background:var(--bg);transform:rotateY(180deg);}
+.flip-back h4{font-family:var(--serif);font-size:20px;margin-bottom:16px;}
+.flip-back ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;overflow-y:auto;}
+.flip-back li{font-size:13.5px;color:var(--fg-dim);padding-left:16px;position:relative;}
+.flip-back li::before{content:'';position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;}
+.flip-back .back-btn{margin-top:auto;padding-top:14px;font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+@media(max-width:560px){.flip-card{height:340px;}}
 
 /* ===== Gallery (lookbook) ===== */
 .gallery-pin{overflow:visible;}
@@ -306,8 +314,9 @@ html.light .svc-img::after{background:linear-gradient(180deg, rgba(21,5,7,.25) 0
 .test-card .who span{font-family:var(--mono);font-size:10.5px;color:var(--fg-dim);}
 
 /* ===== Team ===== */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
-@media(max-width:800px){.team-grid{grid-template-columns:1fr;}}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+@media(max-width:1000px){.team-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.team-grid{grid-template-columns:1fr;}}
 .team-card{position:relative;border:1px solid var(--line);padding-top:120%;overflow:hidden;background:linear-gradient(160deg,var(--maroon-800),var(--maroon-950));}
 html.light .team-card{background:linear-gradient(160deg,#f4e3c4,#f7efe4);}
 .team-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.3) brightness(.7);transition:transform .6s var(--ease-out), filter .5s var(--ease-out);transform:scale(1.03);}
@@ -397,6 +406,26 @@ html.light .map-embed{filter:none;}
 .quote-modal__head h3{font-family:var(--serif);font-size:26px;color:var(--fg);margin-bottom:8px;}
 .quote-modal__head p{font-size:13.5px;color:var(--fg-dim);line-height:1.6;}
 .quote-modal__send{width:100%;justify-content:center;margin-top:6px;}
+
+/* ===== Floating call button ===== */
+.float-call{
+  position:fixed;bottom:24px;right:24px;z-index:400;
+  width:58px;height:58px;border-radius:50%;
+  background:var(--gold-400);color:var(--maroon-950);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 16px 36px -12px rgba(0,0,0,.6);
+  transition:transform .3s var(--ease-out), background .3s ease;
+}
+.float-call svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.float-call:hover{transform:scale(1.08);background:var(--gold-300);}
+.float-call::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:2px solid var(--gold-400);
+  animation:callPulse 2.2s ease-out infinite;
+}
+@keyframes callPulse{0%{transform:scale(1);opacity:.65;}100%{transform:scale(1.7);opacity:0;}}
+@media(max-width:600px){.float-call{width:52px;height:52px;bottom:18px;right:18px;}}
+
 @media(max-width:520px){.quote-modal__panel{padding:30px 22px 26px;}}
 body.modal-open{overflow:hidden;}
 
@@ -497,7 +526,7 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
   <!-- HERO -->
   <section class="hero">
     <div class="wrap hero-inner">
-      <div class="eyebrow" id="heroEyebrow">Dadabari, Kota · Est. Reputation, 521 Reviews</div>
+      <div class="eyebrow" id="heroEyebrow">Dadabari, Kota · 4.7★ Justdial · 347 Reviews</div>
       <h1 style="margin-top:22px;">
         <span class="line"><span>Where beauty</span></span>
         <span class="line"><span>becomes <em style="font-style:italic;color:var(--gold-300);">art.</em></span></span>
@@ -521,16 +550,16 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
 
     <div class="marquee-strip">
       <div class="marquee-track">
-        <span><b>4.8★</b> Google Rating</span>
-        <span><b>521</b> Verified Reviews</span>
-        <span><b>12.6K+</b> Instagram Community</span>
+        <span><b>4.7★</b> Justdial · 347 Reviews</span>
+        <span><b>5.0★</b> Bewtee</span>
+        <span><b>4.9K+</b> Instagram Community</span>
         <span>Bridal &amp; Event Styling</span>
-        <span>Admissions Open — Hair Academy</span>
-        <span><b>4.8★</b> Google Rating</span>
-        <span><b>521</b> Verified Reviews</span>
-        <span><b>12.6K+</b> Instagram Community</span>
+        <span>Training &amp; Hiring — In-House Academy</span>
+        <span><b>4.7★</b> Justdial · 347 Reviews</span>
+        <span><b>5.0★</b> Bewtee</span>
+        <span><b>4.9K+</b> Instagram Community</span>
         <span>Bridal &amp; Event Styling</span>
-        <span>Admissions Open — Hair Academy</span>
+        <span>Training &amp; Hiring — In-House Academy</span>
       </div>
     </div>
 
@@ -542,16 +571,16 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
     <div class="wrap">
       <div class="about-grid">
         <div class="about-copy">
-          <p class="reveal">A single chair in Dadabari grew into Kota's most-reviewed salon and a working academy — because every client left looking, and feeling, like the best version of themselves.</p>
-          <p class="reveal">Manisha Tushar Salon &amp; Academy brings hair colour, bridal makeup, nail artistry and skin care under one roof, led by stylists who treat technique as craft. Alongside the salon floor sits the academy: a classroom for stylists who don't just want a certificate, but a real identity in the beauty industry.</p>
+          <p class="reveal">A single chair in Dadabari grew into one of Kota's most-reviewed nail and beauty studios, and a working academy — because every client left looking, and feeling, like the best version of themselves.</p>
+          <p class="reveal">Manisha Tushar Salon &amp; Academy brings hair, skin, makeup and nail artistry under one roof, led by artists who treat technique as craft. Alongside the salon floor sits the academy: a working floor where beauticians and hairdressers are trained and hired directly, not taught from a textbook.</p>
           <p class="reveal">Every appointment is built around one idea — luxury isn't a service, it's a standard, held consistently, chair after chair, bride after bride.</p>
         </div>
         <div>
           <div class="stats reveal">
-            <div class="stat"><b data-count="4.8" data-decimals="1">0</b><span>Google Rating</span></div>
-            <div class="stat"><b data-count="521">0</b><span>Verified Reviews</span></div>
-            <div class="stat"><b data-count="12.6" data-decimals="1">0</b><span>K+ Followers</span></div>
-            <div class="stat"><b data-count="24">0</b><span>Services Offered</span></div>
+            <div class="stat"><b data-count="4.7" data-decimals="1">0</b><span>Justdial Rating</span></div>
+            <div class="stat"><b data-count="347">0</b><span>Verified Reviews</span></div>
+            <div class="stat"><b data-count="5.0" data-decimals="1">0</b><span>Bewtee Rating</span></div>
+            <div class="stat"><b data-count="10">0</b><span>Years in Kota</span></div>
           </div>
         </div>
       </div>
@@ -561,8 +590,8 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
         <div class="tl-row">
           <div class="tl-item reveal"><b>Chair One</b><p>A single styling chair in Dadabari, built on repeat clients and word of mouth.</p></div>
           <div class="tl-item reveal"><b>Full Salon Floor</b><p>Hair, nails, skin and bridal services united into one atelier experience.</p></div>
-          <div class="tl-item reveal"><b>The Academy Opens</b><p>Admissions open for stylists who want mastery, not just a basic course.</p></div>
-          <div class="tl-item reveal"><b>521 Reviews &amp; Counting</b><p>A 4.8★ reputation built one appointment, one bride, at a time.</p></div>
+          <div class="tl-item reveal"><b>The Academy Opens</b><p>Now hiring and training beauticians and hairdressers, right on the salon floor.</p></div>
+          <div class="tl-item reveal"><b>347 Reviews &amp; Counting</b><p>A 4.7★ reputation built one appointment, one bride, at a time.</p></div>
         </div>
       </div>
     </div>
@@ -573,46 +602,99 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
     <div class="wrap">
       <div class="section-head">
         <div class="eyebrow reveal">What We Do</div>
-        <h2 class="reveal">Five disciplines. <span class="stroke">One standard<svg viewBox="0 0 200 20"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
-        <p class="reveal">Hover any discipline to see what's inside. Every service is performed by a specialist, not a generalist.</p>
+        <h2 class="reveal">Four disciplines. <span class="stroke">One standard<svg viewBox="0 0 200 20"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
+        <p class="reveal">Tap a discipline below, then tap the card to see what's inside. Every service is performed by a specialist, not a generalist.</p>
       </div>
+
+      <div class="svc-rail" id="svcRail">
+        <button class="active" data-cat="hair" style="--c:var(--maroon-700)"><span class="dot" style="background:var(--maroon-700)"></span>Hair</button>
+        <button data-cat="skin" style="--c:var(--gold-400)"><span class="dot" style="background:var(--gold-400)"></span>Skin</button>
+        <button data-cat="makeup" style="--c:var(--gold-300)"><span class="dot" style="background:var(--gold-300)"></span>Makeup</button>
+        <button data-cat="nails" style="--c:var(--rose-300)"><span class="dot" style="background:var(--rose-300)"></span>Nails</button>
+      </div>
+
       <div class="svc-grid" id="svcGrid">
-        <div class="svc-card">
-          <div class="svc-img"><img src="images/hair.jpg" alt="Hair styling and curling at the salon" loading="lazy"></div>
-          <span class="num">01</span><h3>Hair</h3>
-          <ul><li>Haircut &amp; Styling</li><li>Balayage &amp; Highlighting</li><li>Keratin Treatments</li><li>Extensions &amp; Updos</li><li>Blow Dry &amp; Straightening</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 4c4 0 6 4 8 10s4 6 8 6M4 20c4 0 6-4 8-10s4-6 8-6"/></svg></div>
+
+        <div class="flip-card reveal" data-cat="hair">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" style="background:linear-gradient(155deg,#5a1f26,#150507);">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 4c4 0 6 4 8 10s4 6 8 6M4 20c4 0 6-4 8-10s4-6 8-6"/></svg></div>
+              <div><h3>Hair</h3><span class="tap-hint">Tap to see services</span></div>
+            </div>
+            <div class="flip-face flip-back">
+              <h4 style="color:var(--maroon-700)">Hair</h4>
+              <ul>
+                <li style="--c:var(--maroon-700)"><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--maroon-700)"></span>Haircut &amp; styling</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--maroon-700)"></span>Balayage &amp; highlighting</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--maroon-700)"></span>Keratin treatments</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--maroon-700)"></span>Extensions &amp; updos</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--maroon-700)"></span>Blow dry &amp; straightening</li>
+              </ul>
+              <span class="back-btn" style="color:var(--maroon-700)">Manisha's specialty →</span>
+            </div>
+          </div>
         </div>
-        <div class="svc-card">
-          <div class="svc-img"><img src="images/bridal___makeup.jpg" alt="Bridal makeup being applied" loading="lazy"></div>
-          <span class="num">02</span><h3>Bridal &amp; Makeup</h3>
-          <ul><li>HD &amp; Airbrush Makeup</li><li>Bridal Hair Design</li><li>Wedding &amp; Event Prep</li><li>Trial Sittings</li><li>On-Location Styling</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+
+        <div class="flip-card reveal" data-cat="skin">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" style="background:linear-gradient(155deg,#7a3b2e,#2a0e12);">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 21c4-3 8-6.5 8-11a8 8 0 10-16 0c0 4.5 4 8 8 11z"/></svg></div>
+              <div><h3>Skin &amp; Spa</h3><span class="tap-hint">Tap to see services</span></div>
+            </div>
+            <div class="flip-face flip-back">
+              <h4 style="color:var(--gold-400)">Skin &amp; Spa</h4>
+              <ul>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-400)"></span>Facials &amp; skin care</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-400)"></span>Body &amp; Brazilian waxing</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-400)"></span>Full body massage</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-400)"></span>Hand &amp; foot massage</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-400)"></span>Threading &amp; shaping</li>
+              </ul>
+              <span class="back-btn" style="color:var(--gold-400)">Ask for Sushant →</span>
+            </div>
+          </div>
         </div>
-        <div class="svc-card">
-          <div class="svc-img"><img src="images/nails.jpg" alt="Nail art and manicure detailing" loading="lazy"></div>
-          <span class="num">03</span><h3>Nails</h3>
-          <ul><li>Acrylic &amp; Extensions</li><li>Nail Art &amp; Design</li><li>Manicure &amp; Pedicure</li><li>Callus Removal</li><li>Polish &amp; Gel Finish</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+
+        <div class="flip-card reveal" data-cat="makeup">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" style="background:linear-gradient(155deg,#3d151a,#8a6a2a);">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+              <div><h3>Makeup</h3><span class="tap-hint">Tap to see services</span></div>
+            </div>
+            <div class="flip-face flip-back">
+              <h4 style="color:var(--gold-300)">Bridal &amp; Makeup</h4>
+              <ul>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-300)"></span>HD &amp; airbrush makeup</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-300)"></span>Bridal hair design</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-300)"></span>Wedding &amp; event prep</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-300)"></span>Trial sittings</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--gold-300)"></span>On-location styling</li>
+              </ul>
+              <span class="back-btn" style="color:var(--gold-300)">Book early for wedding season →</span>
+            </div>
+          </div>
         </div>
-        <div class="svc-card">
-          <div class="svc-img"><img src="images/skin___spa.jpg" alt="Facial spa treatment" loading="lazy"></div>
-          <span class="num">04</span><h3>Skin &amp; Spa</h3>
-          <ul><li>Facials &amp; Skin Care</li><li>Body &amp; Brazilian Waxing</li><li>Full Body Massage</li><li>Hand &amp; Foot Massage</li><li>Threading &amp; Shaping</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 21c4-3 8-6.5 8-11a8 8 0 10-16 0c0 4.5 4 8 8 11z"/></svg></div>
+
+        <div class="flip-card reveal" data-cat="nails">
+          <div class="flip-inner">
+            <div class="flip-face flip-front" style="background:linear-gradient(155deg,#6b2e3a,#150507);">
+              <div class="icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+              <div><h3>Nails</h3><span class="tap-hint">Tap to see services</span></div>
+            </div>
+            <div class="flip-face flip-back">
+              <h4 style="color:var(--rose-300)">Nails</h4>
+              <ul>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-300)"></span>Acrylic &amp; extensions</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-300)"></span>Nail art &amp; design</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-300)"></span>Manicure &amp; pedicure</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-300)"></span>Men's manicures</li>
+                <li><span style="position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--rose-300)"></span>Callus removal</li>
+              </ul>
+              <span class="back-btn" style="color:var(--rose-300)">Tushar's specialty →</span>
+            </div>
+          </div>
         </div>
-        <div class="svc-card">
-          <div class="svc-img"><img src="images/academy.jpg" alt="Salon training floor" loading="lazy"></div>
-          <span class="num">05</span><h3 id="academy">Academy</h3>
-          <ul><li>Professional Hairdressing</li><li>Colour Theory &amp; Technique</li><li>Bridal Makeup Certification</li><li>Salon-Floor Practicum</li><li>Admissions Open Now</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3l10 5-10 5L2 8z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/></svg></div>
-        </div>
-        <div class="svc-card">
-          <div class="svc-img"><img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?q=80&w=900&auto=format&fit=crop" alt="Salon reception and booking" loading="lazy"></div>
-          <span class="num">06</span><h3>Online Booking</h3>
-          <ul><li>WhatsApp Scheduling</li><li>Instant Confirmation</li><li>Reminders Before Visit</li><li>Custom Package Quotes</li><li>Walk-ins Welcome</li></ul>
-          <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="1"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></div>
-        </div>
+
       </div>
     </div>
   </section>
@@ -638,24 +720,24 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
   <section id="reviews">
     <div class="wrap">
       <div class="section-head">
-        <div class="eyebrow reveal">Google Reviews · 4.8 / 5</div>
-        <h2 class="reveal">521 reasons to trust the chair.</h2>
+        <div class="eyebrow reveal">Justdial · 4.7 / 5 · 347 Reviews</div>
+        <h2 class="reveal">347 reasons to trust the chair.</h2>
       </div>
       <div class="test-grid">
         <div class="test-card reveal">
           <div class="stars">★★★★★</div>
-          <p>A client walked away thrilled after her visit, saying the stylist nailed the fresh new look she'd been hoping for.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Google Reviewer</b><span>Hair Styling</span></div></footer>
+          <p>Consistently warm and clean — and the staff always ask before starting a treatment, even a simple massage.</p>
+          <footer><div class="avatar"></div><div class="who"><b>Regular Client</b><span>2+ Years</span></div></footer>
         </div>
         <div class="test-card reveal">
           <div class="stars">★★★★★</div>
-          <p>Regulars say the stylists here consistently understand their style and that Tushar in particular is exceptional with hair.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Google Reviewer</b><span>Repeat Client</span></div></footer>
+          <p>The kind of place you can just sit and feel comfortable in — no rush, and no pressure to add on extra services.</p>
+          <footer><div class="avatar"></div><div class="who"><b>Longtime Client</b><span>10+ Years</span></div></footer>
         </div>
         <div class="test-card reveal">
           <div class="stars">★★★★★</div>
-          <p>Called out as one of Kota's best colour destinations, with highlight work praised for the depth and shine it gave dull hair.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Google Reviewer</b><span>Colour &amp; Highlights</span></div></footer>
+          <p>Fair pricing for the quality of work — every consultation feels attentive, never rushed, even for bridal bookings.</p>
+          <footer><div class="avatar"></div><div class="who"><b>Bridal Client</b><span>Hair &amp; Makeup</span></div></footer>
         </div>
       </div>
     </div>
@@ -669,9 +751,10 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
         <h2 class="reveal">Faces behind the chair.</h2>
       </div>
       <div class="team-grid">
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=800&auto=format&fit=crop" alt="Hair styling in progress" loading="lazy"><div class="info"><h3>Tushar</h3><span>LEAD HAIR STYLIST</span><p>The name clients ask for by request — colour, cut and styling with an editorial eye.</p></div></div>
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1578503803703-e818b8a0e00b?q=80&w=800&auto=format&fit=crop" alt="Bridal makeup kit and gold jewellery" loading="lazy"><div class="info"><h3>Manisha Makhija</h3><span>FOUNDER &amp; MUA</span><p>Bridal makeup artist behind the salon's signature HD and airbrush looks.</p></div></div>
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=800&auto=format&fit=crop" alt="Salon training floor with chairs" loading="lazy"><div class="info"><h3>Academy Faculty</h3><span>HAIRDRESSING &amp; COLOUR</span><p>Working stylists training the next generation on the same salon floor.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=800&auto=format&fit=crop" alt="Hair styling in progress" loading="lazy"><div class="info"><h3>Manisha</h3><span>CO-FOUNDER · HAIR</span><p>Known across Kota for precision cuts and finishing styles that actually hold — trained in Mumbai &amp; Delhi.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy"><div class="info"><h3>Tushar</h3><span>CO-FOUNDER · NAIL ARTIST</span><p>The hand behind the salon's nail art — from clean everyday polish to detailed acrylic design.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=800&auto=format&fit=crop" alt="Senior stylist at work" loading="lazy"><div class="info"><h3>Sushant Verma</h3><span>SENIOR HAIR PROFESSIONAL</span><p>Hair botox, spa &amp; massage. Regulars call him one of the most knowledgeable hands in the salon.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop" alt="Stylist finishing a client's look" loading="lazy"><div class="info"><h3>Pooja</h3><span>STYLIST</span><p>Named often by regulars for careful, dependable styling work.</p></div></div>
       </div>
     </div>
   </section>
@@ -739,9 +822,13 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
           <button class="faq-q"><span>How far in advance should bridal clients book?</span><span class="plus">+</span></button>
           <div class="faq-a"><p>We recommend locking your bridal package and trial sitting several weeks ahead of the wedding date, especially in peak season, so hair, makeup and nail work can be planned together.</p></div>
         </div>
+        <div class="faq-item" id="academy">
+          <button class="faq-q"><span>Is the academy a paid course, or a job?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>It's hands-on, paid training on the salon floor — not a classroom course. We're currently hiring Senior Beauticians (₹10,000–₹23,500/month plus incentives, 6-day week) and Unisex Hairdressers (2+ years' experience preferred). Message us on WhatsApp if you'd like to join the team.</p></div>
+        </div>
         <div class="faq-item">
-          <button class="faq-q"><span>What does academy admission involve?</span><span class="plus">+</span></button>
-          <div class="faq-a"><p>Admissions are open on a rolling basis for hairdressing and bridal makeup training. Message the salon directly for current batch dates, course structure and fees.</p></div>
+          <button class="faq-q"><span>What are your hours?</span><span class="plus">+</span></button>
+          <div class="faq-a"><p>Monday–Saturday, 10:00 AM to 9:00 PM. Sunday hours vary, so it's worth messaging ahead if you're planning a weekend visit.</p></div>
         </div>
         <div class="faq-item">
           <button class="faq-q"><span>Where exactly are you located?</span><span class="plus">+</span></button>
@@ -755,15 +842,16 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
   <section id="contact">
     <div class="wrap">
       <div class="section-head">
-        <div class="eyebrow reveal">Visit or Message Us</div>
-        <h2 class="reveal">Let's plan your look.</h2>
+        <div class="eyebrow reveal">Come In</div>
+        <h2 class="reveal">Find us in Dadabari.</h2>
       </div>
       <div class="contact-grid">
         <div>
           <div class="contact-info reveal">
             <div class="row"><svg viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><b>Address</b><span>1-DA-25, near Dispensary, Dadabari Extension, Dadabari, Kota, Rajasthan 324009</span></div></div>
-            <div class="row"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2z"/></svg><div><b>Phone / WhatsApp</b><span>070144 15988</span></div></div>
-            <div class="row"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 6 10-6"/></svg><div><b>Hours</b><span>Open daily · 1.5–4 hr average visit</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Hours</b><span>Mon–Sat, 10:00 AM – 9:00 PM. Sunday hours vary — call ahead.</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2z"/></svg><div><b>Phone / WhatsApp</b><span>+91 70144 15988</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg><div><b>Instagram</b><span>@manishatusharsalonandacademy</span></div></div>
           </div>
           <div class="social-row reveal">
             <a href="https://instagram.com/manishatusharsalonandacademy" aria-label="Instagram"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
@@ -823,7 +911,7 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
     </div>
     <div class="foot-bottom">
       <span>© 2026 Manisha Tushar Salon &amp; Academy. All rights reserved.</span>
-      <span>Design concept — built for demonstration.</span>
+      <span>Dadabari, Kota · Hair · Skin · Makeup · Nails</span>
     </div>
   </div>
 </footer>
@@ -974,11 +1062,36 @@ gsap.to('#tlBar', {
   scrollTrigger:{trigger:'.timeline', start:'top 75%'}
 });
 
-/* ---------- Services card stagger ---------- */
-gsap.from('#svcGrid .svc-card', {
-  opacity:0, y:40, duration:.8, stagger:.08, ease:'power3.out',
-  scrollTrigger:{trigger:'#svcGrid', start:'top 82%'}
+/* ---------- Services: category rail + flip cards ---------- */
+document.querySelectorAll('.flip-card').forEach(card=>{
+  card.addEventListener('click', ()=> card.classList.toggle('flipped'));
 });
+(function(){
+  const rail = document.getElementById('svcRail');
+  if(!rail) return;
+  rail.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      rail.querySelectorAll('button').forEach(b=>{
+        b.classList.remove('active');
+        b.style.background='transparent';
+        b.style.color='var(--fg)';
+      });
+      btn.classList.add('active');
+      const c = btn.style.getPropertyValue('--c');
+      btn.style.background = c;
+      btn.style.color = 'var(--maroon-950)';
+      document.querySelectorAll('.flip-card').forEach(card=>{
+        if(card.dataset.cat === btn.dataset.cat){
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+        } else {
+          card.style.opacity = '0.4';
+          card.style.transform = 'scale(0.97)';
+        }
+      });
+    });
+  });
+})();
 
 /* ---------- Horizontal gallery: native gesture scroll + mouse drag ---------- */
 (function(){
@@ -1091,6 +1204,10 @@ window.addEventListener('load', ()=> ScrollTrigger.refresh());
     <button type="button" class="btn solid magnetic quote-modal__send" id="qmSendBtn"><span>Send via WhatsApp</span></button>
   </div>
 </div>
+
+<a class="float-call" href="tel:+917014415988" aria-label="Call the salon: +91 70144 15988">
+  <svg viewBox="0 0 24 24"><path d="M4 5c0 8 7 15 15 15l2-4-5-2-1.5 2A12 12 0 0 1 8.5 9.5L10.5 8 8.5 3 4.5 5z"/></svg>
+</a>
 
 <script>
 (function(){
