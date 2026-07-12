@@ -226,7 +226,7 @@ nav.links a:hover{opacity:1;}
 /* ===== Hero ===== */
 .hero{
   position:relative;min-height:clamp(620px,88vh,980px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;
-  padding:120px 0 50px;overflow:hidden;
+  padding:120px 0 60px;overflow:hidden;
   background:var(--maroon-950);
 }
 @media(max-width:900px){.hero{padding:120px 0 90px;min-height:clamp(560px,86vh,900px);}}
@@ -236,7 +236,7 @@ nav.links a:hover{opacity:1;}
 html.light .hero{background:var(--maroon-950);}
 
 .hero-bg{position:absolute;inset:0;z-index:0;}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:62% 32%;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:78% center;}
 @media(max-width:900px){.hero-bg img{object-position:46% 22%;}}
 .hero-bg::before{
   /* horizontal scrim: opaque over the copy on the left, sheer over the portrait on the right */
@@ -253,11 +253,11 @@ html.light .hero{background:var(--maroon-950);}
   .hero-bg::after{background:linear-gradient(180deg, rgba(21,5,7,.05) 0%, rgba(21,5,7,0) 40%, rgba(21,5,7,.9) 100%);}
 }
 
-.hero-inner{position:relative;z-index:3;max-width:760px;}
-.hero h1{font-size:clamp(40px,7.2vw,92px);color:var(--ivory-50);}
+.hero-inner{position:relative;z-index:3;max-width:650px,margin-left:0;}
+.hero h1{font-size:clamp(38px,6vw,78px);color:var(--ivory-50);}
 .hero h1 .line{overflow:hidden;display:block;}
 .hero h1 .line span{display:inline-block;transform:translateY(105%);}
-.hero-sub{max-width:520px;margin-top:26px;font-size:16px;line-height:1.7;color:rgba(247,239,228,.78);opacity:0;}
+.hero-sub{max-width:430px;margin-top:26px;font-size:16px;line-height:1.7;color:rgba(247,239,228,.78);opacity:0;}
 .hero-ctas{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;opacity:0;}
 .hero-scroll{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-300);z-index:3;}
 @media(max-width:900px){.hero-scroll{bottom:16px;gap:6px;}.hero-scroll .bar{height:26px;}}
@@ -768,7 +768,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       <p class="hero-sub" id="heroSub">Kota's atelier for hair, bridal artistry and nail design — and the academy where the next generation of stylists is trained. One address, every occasion, no compromise.</p>
       <div class="hero-ctas" id="heroCtas">
         <a href="https://wa.me/917014415988" class="btn solid magnetic"><span>Book an Appointment</span></a>
-        <a href="#academy" class="btn magnetic"><span>Explore the Academy</span></a>
       </div>
     </div>
 
