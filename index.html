@@ -452,9 +452,132 @@ footer.site{border-top:1px solid var(--line);padding:70px 0 30px;}
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
 }
+
+/* ================================================================
+   PREMIUM MICRO-INTERACTIONS LAYER
+   Custom cursor, page-transition wipe, elevated hovers, icon life,
+   button ripple, gallery lightbox. Desktop-enhanced, touch-safe.
+================================================================ */
+
+/* ---------- Custom cursor (fine-pointer devices only) ---------- */
+@media (hover:hover) and (pointer:fine){
+  body{cursor:none;}
+  a,button,.magnetic,.faq-q,.theme-toggle,.svc-rail button,input,textarea{cursor:none;}
+  #cursorDot,#cursorRing{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;border-radius:50%;will-change:transform;}
+  #cursorDot{width:6px;height:6px;background:var(--gold-300);transform:translate(-50%,-50%);}
+  #cursorRing{width:38px;height:38px;border:1px solid var(--gold-400);opacity:.75;transform:translate(-50%,-50%);transition:width .3s var(--ease-out),height .3s var(--ease-out),opacity .3s ease,border-color .3s ease,background .3s ease;}
+  #cursorRing.is-hover{width:64px;height:64px;background:rgba(230,200,120,.08);opacity:1;}
+  #cursorRing.is-text{width:88px;height:88px;background:var(--gold-400);opacity:1;border-color:transparent;}
+  #cursorRing.is-down{width:30px;height:30px;}
+  #cursorLabel{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--maroon-950);opacity:0;transition:opacity .25s ease;font-weight:700;}
+  #cursorLabel.show{opacity:1;}
+}
+@media (hover:none),(pointer:coarse){#cursorDot,#cursorRing,#cursorLabel{display:none;}}
+
+/* ---------- Scroll progress bar ---------- */
+#scrollProgress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--gold-400),var(--gold-300));z-index:600;transition:width .1s linear;box-shadow:0 0 8px rgba(230,180,90,.6);}
+
+/* ---------- Page-transition wipe (internal anchor navigation) ---------- */
+#pageWipe{position:fixed;inset:0;z-index:9997;background:var(--gold-400);transform:scaleY(0);transform-origin:bottom;pointer-events:none;}
+#pageWipe.run{animation:wipeUp .7s var(--ease-out) forwards;}
+@keyframes wipeUp{0%{transform:scaleY(0);transform-origin:bottom;}45%{transform:scaleY(1);transform-origin:bottom;}55%{transform:scaleY(1);transform-origin:top;}100%{transform:scaleY(0);transform-origin:top;}}
+
+/* ---------- Elevated hover: quiet cards that were static before ---------- */
+.test-card,.price-card,.process-card,.stat,.faq-item,.contact-info .row{transition:transform .45s var(--ease-out),border-color .4s ease,box-shadow .45s var(--ease-out),background .4s ease;}
+.test-card:hover{transform:translateY(-6px);border-color:var(--gold-400);box-shadow:0 24px 48px -24px rgba(0,0,0,.55);}
+.price-card:hover{transform:translateY(-8px);border-color:var(--gold-400);box-shadow:0 30px 60px -26px rgba(0,0,0,.6);}
+.price-card.featured:hover{transform:translateY(-8px) scale(1.01);}
+.process-card{position:relative;overflow:hidden;}
+.process-card::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--gold-400);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-out);}
+.process-card:hover::after{transform:scaleX(1);}
+.process-card:hover .n{transform:translateY(-4px);opacity:.9;}
+.process-card .n{transition:transform .4s var(--ease-out),opacity .4s ease;display:inline-block;}
+.stat:hover{transform:translateY(-4px);background:var(--card);}
+.contact-info .row:hover{padding-left:8px;border-color:var(--gold-400);}
+.faq-q{cursor:pointer;transition:color .3s ease;}
+.faq-item:hover .faq-q{color:var(--gold-300);}
+
+/* ---------- Testimonial star + avatar life ---------- */
+.stars svg{transition:transform .3s var(--ease-out);}
+.test-card:hover .stars svg{animation:starPop .5s var(--ease-out) both;}
+.test-card:hover .stars svg:nth-child(1){animation-delay:.02s;}
+.test-card:hover .stars svg:nth-child(2){animation-delay:.07s;}
+.test-card:hover .stars svg:nth-child(3){animation-delay:.12s;}
+.test-card:hover .stars svg:nth-child(4){animation-delay:.17s;}
+.test-card:hover .stars svg:nth-child(5){animation-delay:.22s;}
+@keyframes starPop{0%{transform:scale(1);}45%{transform:scale(1.35) rotate(-8deg);}100%{transform:scale(1);}}
+.test-card .avatar{transition:transform .4s var(--ease-out);}
+.test-card:hover .avatar{transform:scale(1.1) rotate(-6deg);}
+
+/* ---------- Icon micro-interactions ---------- */
+.icon-wrap{transition:transform .45s var(--ease-out),background .35s ease,border-color .35s ease;}
+.flip-card:hover .icon-wrap{transform:translateY(-4px) rotate(-6deg);background:rgba(255,255,255,.12);}
+.social-row a{transition:transform .35s var(--ease-out),background .35s ease,border-color .35s ease;}
+.social-row a:hover{transform:translateY(-3px) scale(1.08);background:var(--gold-400);border-color:var(--gold-400);}
+.social-row a:hover svg{stroke:var(--maroon-950);}
+.contact-info .row svg{transition:transform .35s var(--ease-out);}
+.contact-info .row:hover svg{transform:scale(1.15) rotate(-4deg);}
+.theme-toggle{transition:transform .4s var(--ease-out),border-color .3s ease;}
+.theme-toggle:hover{transform:rotate(90deg);border-color:var(--gold-400);}
+.float-call svg{transition:transform .3s var(--ease-out);}
+.float-call:hover svg{transform:scale(1.1) rotate(8deg);}
+.svc-rail button{transition:transform .3s var(--ease-out),border-color .3s ease,background .3s ease,color .3s ease;}
+.svc-rail button:hover{transform:translateY(-2px);}
+.svc-rail button .dot{transition:transform .3s var(--ease-out);}
+.svc-rail button:hover .dot{transform:scale(1.3);}
+.faq-q .plus{display:inline-block;}
+.mobile-menu-btn span{transition:transform .3s var(--ease-out),opacity .3s ease;}
+
+/* ---------- Button ripple ---------- */
+.btn{isolation:isolate;}
+.btn .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);transform:scale(0);animation:rippleOut .6s ease-out forwards;pointer-events:none;z-index:0;}
+.btn.solid .ripple{background:rgba(21,5,7,.35);}
+@keyframes rippleOut{to{transform:scale(2.6);opacity:0;}}
+.btn:active{transform:scale(.97);}
+.btn{transition:transform .15s var(--ease-out);}
+
+/* ---------- Nav link underline life + logo ---------- */
+.logo{transition:transform .35s var(--ease-out);}
+.logo:hover{transform:translateX(2px);}
+.logo b{position:relative;}
+
+/* ---------- Gallery lightbox ---------- */
+.look-card{cursor:pointer;}
+.look-card .content,.look-card .bg img{transition:transform .5s var(--ease-out);}
+.look-card:hover .bg img{transform:scale(1.04);}
+#lightbox{position:fixed;inset:0;z-index:800;display:none;align-items:center;justify-content:center;padding:40px;}
+#lightbox.is-open{display:flex;}
+#lightbox .lb-backdrop{position:absolute;inset:0;background:rgba(10,3,4,.88);backdrop-filter:blur(6px);opacity:0;transition:opacity .35s ease;}
+#lightbox.is-open .lb-backdrop{opacity:1;}
+#lightbox .lb-panel{position:relative;z-index:1;max-width:640px;width:100%;transform:scale(.92) translateY(16px);opacity:0;transition:transform .4s var(--ease-out),opacity .35s ease;}
+#lightbox.is-open .lb-panel{transform:scale(1) translateY(0);opacity:1;}
+#lightbox img{width:100%;max-height:72vh;object-fit:cover;border:1px solid var(--line);}
+#lightbox .lb-cap{margin-top:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:20px;}
+#lightbox .lb-cap h3{font-size:24px;color:var(--ivory-50);}
+#lightbox .lb-cap p{font-size:13px;color:var(--fg-dim);margin-top:6px;max-width:340px;}
+#lightbox .lb-close{width:42px;height:42px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ivory-50);font-size:20px;flex-shrink:0;transition:transform .3s var(--ease-out),border-color .3s ease,color .3s ease;}
+#lightbox .lb-close:hover{transform:rotate(90deg);border-color:var(--gold-400);color:var(--gold-300);}
+@media(max-width:640px){#lightbox{padding:20px;}}
+
+/* ---------- Loading state polish for lazy images ---------- */
+img[loading="lazy"]{opacity:0;transition:opacity .7s var(--ease-out);}
+img[loading="lazy"].img-loaded{opacity:1;}
+
+@media (prefers-reduced-motion: reduce){
+  #pageWipe{display:none !important;}
+  #cursorDot,#cursorRing,#cursorLabel{display:none !important;}
+  body{cursor:auto !important;}
+  a,button{cursor:pointer !important;}
+}
 </style>
 </head>
 <body>
+
+<div id="cursorRing"></div>
+<div id="cursorDot"></div>
+<div id="cursorLabel"></div>
+<div id="scrollProgress"></div>
+<div id="pageWipe"></div>
 
 <div id="loader">
   <div class="loader-glow"></div>
@@ -1193,6 +1316,134 @@ if (!reduceMotion){
 
 /* ---------- Refresh ScrollTrigger after full load ---------- */
 window.addEventListener('load', ()=> ScrollTrigger.refresh());
+
+/* ================================================================
+   PREMIUM MICRO-INTERACTIONS JS
+================================================================ */
+const fineDevice = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+/* ---------- Custom cursor ---------- */
+if (fineDevice && !reduceMotion){
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  const label = document.getElementById('cursorLabel');
+  let mx=0,my=0, rx=0,ry=0;
+  window.addEventListener('mousemove', e=>{
+    mx=e.clientX; my=e.clientY;
+    gsap.set(dot, {x:mx, y:my});
+    gsap.set(label, {x:mx, y:my});
+  });
+  gsap.ticker.add(()=>{
+    rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    gsap.set(ring, {x:rx, y:ry});
+  });
+  document.addEventListener('mousedown', ()=> ring.classList.add('is-down'));
+  document.addEventListener('mouseup', ()=> ring.classList.remove('is-down'));
+
+  const hoverables = 'a, button, .magnetic, .faq-q, .theme-toggle, .svc-rail button, input, textarea, .float-call, .flip-card, .faq-item';
+  document.querySelectorAll(hoverables).forEach(el=>{
+    el.addEventListener('mouseenter', ()=> ring.classList.add('is-hover'));
+    el.addEventListener('mouseleave', ()=> ring.classList.remove('is-hover'));
+  });
+
+  document.querySelectorAll('.look-card').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>{
+      ring.classList.add('is-text'); label.textContent = 'View'; label.classList.add('show');
+    });
+    el.addEventListener('mouseleave', ()=>{
+      ring.classList.remove('is-text'); label.classList.remove('show');
+    });
+  });
+}
+
+/* ---------- Scroll progress bar ---------- */
+(function(){
+  const bar = document.getElementById('scrollProgress');
+  function update(){
+    const h = document.documentElement;
+    const scrolled = h.scrollTop;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max>0 ? (scrolled/max)*100 : 0) + '%';
+  }
+  window.addEventListener('scroll', update, {passive:true});
+  window.addEventListener('resize', update);
+  update();
+})();
+
+/* ---------- Page-transition wipe on internal anchor navigation ---------- */
+(function(){
+  const wipe = document.getElementById('pageWipe');
+  if (reduceMotion) return;
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const id = a.getAttribute('href');
+      if (!id || id === '#' || !document.querySelector(id)) return;
+      wipe.classList.remove('run');
+      void wipe.offsetWidth; // restart animation
+      wipe.classList.add('run');
+    });
+  });
+})();
+
+/* ---------- Button ripple ---------- */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('click', function(e){
+    const r = btn.getBoundingClientRect();
+    const size = Math.max(r.width, r.height) * 1.4;
+    const span = document.createElement('span');
+    span.className = 'ripple';
+    span.style.width = span.style.height = size + 'px';
+    span.style.left = (e.clientX - r.left - size/2) + 'px';
+    span.style.top = (e.clientY - r.top - size/2) + 'px';
+    btn.appendChild(span);
+    setTimeout(()=> span.remove(), 650);
+  });
+});
+
+/* ---------- Lazy-image fade-in on real load ---------- */
+document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
+  if (img.complete) img.classList.add('img-loaded');
+  else img.addEventListener('load', ()=> img.classList.add('img-loaded'));
+});
+
+/* ---------- Gallery lightbox ---------- */
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbDesc = document.getElementById('lbDesc');
+  const lbEyebrow = document.getElementById('lbEyebrow');
+  const lbClose = document.getElementById('lbClose');
+  const lbBackdrop = document.getElementById('lbBackdrop');
+  let lastFocused = null;
+
+  document.querySelectorAll('.look-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const img = card.querySelector('.bg img');
+      const small = card.querySelector('small');
+      const h3 = card.querySelector('h3');
+      const p = card.querySelector('p');
+      lastFocused = document.activeElement;
+      lbImg.src = img.src; lbImg.alt = img.alt;
+      lbEyebrow.textContent = small ? small.textContent : 'Atelier';
+      lbTitle.textContent = h3 ? h3.textContent : '';
+      lbDesc.textContent = p ? p.textContent : '';
+      lb.classList.add('is-open');
+      document.body.classList.add('modal-open');
+    });
+  });
+
+  function closeLb(){
+    lb.classList.remove('is-open');
+    document.body.classList.remove('modal-open');
+    if (lastFocused) lastFocused.focus();
+  }
+  lbClose.addEventListener('click', closeLb);
+  lbBackdrop.addEventListener('click', closeLb);
+  document.addEventListener('keydown', e=>{
+    if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLb();
+  });
+})();
 </script>
 <div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
   <div class="quote-modal__backdrop" id="quoteModalBackdrop"></div>
@@ -1210,6 +1461,21 @@ window.addEventListener('load', ()=> ScrollTrigger.refresh());
       <div class="field"><label>Message <span class="optional">(optional)</span></label><textarea id="qmMessage" placeholder="Anything else we should know?"></textarea></div>
     </div>
     <button type="button" class="btn solid magnetic quote-modal__send" id="qmSendBtn"><span>Send via WhatsApp</span></button>
+  </div>
+</div>
+
+<div id="lightbox" role="dialog" aria-modal="true" aria-label="Look preview">
+  <div class="lb-backdrop" id="lbBackdrop"></div>
+  <div class="lb-panel">
+    <img id="lbImg" src="" alt="">
+    <div class="lb-cap">
+      <div>
+        <div class="eyebrow" id="lbEyebrow">Atelier</div>
+        <h3 id="lbTitle" style="margin-top:8px;"></h3>
+        <p id="lbDesc"></p>
+      </div>
+      <button type="button" class="lb-close" id="lbClose" aria-label="Close preview">&times;</button>
+    </div>
   </div>
 </div>
 
