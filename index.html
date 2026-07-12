@@ -5,13 +5,62 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manisha Tushar Salon &amp; Academy — Kota</title>
 <meta name="description" content="Manisha Tushar Salon &amp; Academy — unisex hair, bridal, nail and skin artistry in Dadabari, Kota. 4.7★ across 347 reviews. Training and hiring through our in-house academy.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.manishatusharsalon.com/">
+<meta name="theme-color" content="#150507">
+<meta name="color-scheme" content="dark light">
 
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="business.business">
+<meta property="og:title" content="Manisha Tushar Salon & Academy — Kota">
+<meta property="og:description" content="Unisex hair, bridal, nail and skin artistry in Dadabari, Kota. 4.7★ across 347 reviews. Training and hiring through our in-house academy.">
+<meta property="og:image" content="https://www.manishatusharsalon.com/images/og-cover.jpg">
+<meta property="og:url" content="https://www.manishatusharsalon.com/">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Manisha Tushar Salon & Academy — Kota">
+<meta name="twitter:description" content="Unisex hair, bridal, nail and skin artistry in Dadabari, Kota. 4.7★ across 347 reviews.">
+<meta name="twitter:image" content="https://www.manishatusharsalon.com/images/og-cover.jpg">
+
+<!-- Preconnects: fonts, CDN script, hotlinked image host -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="dns-prefetch" href="https://images.unsplash.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<!-- GSAP: deferred so it never blocks first paint/HTML parsing. Inline scripts run
+     after DOM parse (placed at end of body) so execution order is still guaranteed. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+<!-- Structured data for local business SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HairSalon",
+  "name": "Manisha Tushar Salon & Academy",
+  "image": "https://www.manishatusharsalon.com/images/og-cover.jpg",
+  "telephone": "+91-70144-15988",
+  "priceRange": "₹₹",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "1-DA-25, Dadabari",
+    "addressLocality": "Kota",
+    "addressRegion": "Rajasthan",
+    "postalCode": "324009",
+    "addressCountry": "IN"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "347"
+  },
+  "sameAs": ["https://instagram.com/manishatusharsalonandacademy"]
+}
+</script>
 
 <style>
 :root{
@@ -88,7 +137,7 @@ body.no-gsap-fallback .reveal{opacity:1 !important;transform:none !important;}
 body.no-gsap-fallback .hero h1 .line span{transform:translateY(0) !important;}
 body.no-gsap-fallback #heroSub,
 body.no-gsap-fallback #heroCtas,
-body.no-gsap-fallback #heroFloat{opacity:1 !important;transform:none !important;}
+body.no-gsap-fallback .hero-bg{opacity:1 !important;transform:none !important;}
 body.no-gsap-fallback .stroke path{stroke-dashoffset:0 !important;}
 
 /* ===== Loader — brushstroke monogram + parting curtains ===== */
@@ -176,23 +225,46 @@ nav.links a:hover{opacity:1;}
 
 /* ===== Hero ===== */
 .hero{
-  position:relative;min-height:fit-content;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;
+  position:relative;min-height:clamp(620px,88vh,980px);box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;
   padding:120px 0 50px;overflow:hidden;
-  background:radial-gradient(120% 90% at 50% -10%, var(--maroon-800) 0%, var(--maroon-950) 55%, var(--maroon-950) 100%);
+  background:var(--maroon-950);
 }
-@media(max-width:900px){.hero{padding:120px 0 90px;}}
-html.light .hero{background:radial-gradient(120% 90% at 50% -10%, #f2ddc0 0%, var(--ivory-50) 55%, var(--ivory-50) 100%);}
+@media(max-width:900px){.hero{padding:120px 0 90px;min-height:clamp(560px,86vh,900px);}}
+/* The hero now carries a fixed photographic backdrop, so its text stays on a
+   permanently dark, legible scrim regardless of the site-wide light/dark toggle —
+   the same way a printed cover doesn't change with the reader's device theme. */
+html.light .hero{background:var(--maroon-950);}
+
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:78% 30%;}
+@media(max-width:900px){.hero-bg img{object-position:70% 22%;}}
+.hero-bg::before{
+  /* horizontal scrim: opaque over the copy on the left, sheer over the portrait on the right */
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(100deg, var(--maroon-950) 0%, rgba(21,5,7,.94) 26%, rgba(21,5,7,.55) 48%, rgba(21,5,7,.1) 68%, rgba(21,5,7,.28) 100%);
+}
+.hero-bg::after{
+  /* vertical scrim: keeps the marquee strip and scroll cue readable at the foot of the hero */
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg, rgba(21,5,7,.15) 0%, rgba(21,5,7,0) 30%, rgba(21,5,7,0) 62%, rgba(21,5,7,.85) 100%);
+}
+@media(max-width:900px){
+  .hero-bg::before{background:linear-gradient(180deg, var(--maroon-950) 0%, rgba(21,5,7,.88) 30%, rgba(21,5,7,.35) 58%, rgba(21,5,7,.55) 100%);}
+  .hero-bg::after{background:linear-gradient(180deg, rgba(21,5,7,.05) 0%, rgba(21,5,7,0) 40%, rgba(21,5,7,.9) 100%);}
+}
+
 .hero-inner{position:relative;z-index:3;}
-.hero h1{font-size:clamp(44px,8vw,108px);color:var(--fg);}
+.hero h1{font-size:clamp(44px,8vw,108px);color:var(--ivory-50);}
 .hero h1 .line{overflow:hidden;display:block;}
 .hero h1 .line span{display:inline-block;transform:translateY(105%);}
-.hero-sub{max-width:520px;margin-top:26px;font-size:16px;line-height:1.7;color:var(--fg-dim);opacity:0;}
+.hero-sub{max-width:520px;margin-top:26px;font-size:16px;line-height:1.7;color:rgba(247,239,228,.78);opacity:0;}
 .hero-ctas{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;opacity:0;}
 .hero-scroll{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-300);z-index:3;}
 @media(max-width:900px){.hero-scroll{bottom:16px;gap:6px;}.hero-scroll .bar{height:26px;}}
 .hero-scroll .bar{width:1px;height:38px;background:linear-gradient(to bottom, var(--gold-400), transparent);position:relative;overflow:hidden;}
 .hero-scroll .bar i{position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--gold-300);animation:dropline 1.8s ease-in-out infinite;}
 @keyframes dropline{0%{top:-100%;}60%{top:100%;}100%{top:100%;}}
+
 
 /* marquee strip */
 .marquee-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin-top:32px;overflow:hidden;position:relative;z-index:3;}
@@ -201,13 +273,6 @@ html.light .hero{background:radial-gradient(120% 90% at 50% -10%, #f2ddc0 0%, va
 .marquee-track span b{color:var(--gold-300);}
 @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-/* floating 3D card in hero */
-.hero-float{position:absolute;right:6%;top:26%;width:220px;height:280px;z-index:2;perspective:1000px;display:none;}
-@media(min-width:1100px){.hero-float{display:block;}}
-.hero-float .card3d{width:100%;height:100%;border:1px solid var(--line);background:linear-gradient(160deg, var(--maroon-700), var(--maroon-950));backdrop-filter:blur(6px);display:flex;flex-direction:column;justify-content:flex-end;padding:20px;transform-style:preserve-3d;transition:transform .1s linear;box-shadow:0 40px 80px rgba(0,0,0,.5);}
-html.light .hero-float .card3d{background:linear-gradient(160deg, #fff, #f0dfc4);}
-.hero-float .card3d small{font-family:var(--mono);font-size:10px;color:var(--gold-300);letter-spacing:.14em;}
-.hero-float .card3d strong{font-family:var(--serif);font-size:20px;margin-top:6px;}
 
 /* ===== Section generic ===== */
 section{position:relative;z-index:2;padding:140px 0;}
@@ -569,9 +634,42 @@ img[loading="lazy"].img-loaded{opacity:1;}
   body{cursor:auto !important;}
   a,button{cursor:pointer !important;}
 }
+
+/* ================================================================
+   PERFORMANCE LAYER
+================================================================ */
+
+/* Render offscreen sections cheaply until they're near the viewport.
+   Keeps initial layout/paint cost down on long single-page sites.
+   contain-intrinsic-size prevents scrollbar/CLS jumps on first estimate. */
+#about,#services,#academy,#gallery,#reviews,#pricing,#process,#faq,#contact{
+  content-visibility:auto;
+  contain-intrinsic-size:1px 1400px;
+}
+
+/* GPU-composited layers only for elements that actually animate every frame.
+   Left off everything else so we don't burn memory on idle layers. */
+#cursorDot,#cursorRing,.marquee-track,.hero-bg,.look-card .bg img,.team-card img,.flip-front img{
+  transform:translateZ(0);
+  backface-visibility:hidden;
+}
+
+/* Visible, high-contrast keyboard focus ring (independent of the custom mouse cursor) */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--gold-400);
+  outline-offset:3px;
+}
+
+/* Skip link */
+.skip-link{position:fixed;top:-100px;left:12px;z-index:9999;background:var(--gold-400);color:var(--maroon-950);
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:12px 18px;
+  transition:top .25s var(--ease-out);}
+.skip-link:focus{top:12px;}
 </style>
 </head>
 <body>
+
+<a href="#top" class="skip-link">Skip to content</a>
 
 <div id="cursorRing"></div>
 <div id="cursorDot"></div>
@@ -586,10 +684,10 @@ img[loading="lazy"].img-loaded{opacity:1;}
       <img class="loader-mark" src="images/monogram-mark.png" alt="" aria-hidden="true">
     </div>
     <div class="mono-word" id="loaderWord">Manisha Tushar</div>
-    <svg class="mono-stroke" viewBox="0 0 190 16"><path d="M4 9 Q 48 1, 95 9 T 186 9"/></svg>
+    <svg class="mono-stroke" viewBox="0 0 190 16" aria-hidden="true"><path d="M4 9 Q 48 1, 95 9 T 186 9"/></svg>
     <div class="mono-sub">Salon &amp; Academy</div>
     <div class="ring-wrap">
-      <svg class="ring-svg" viewBox="0 0 120 120"><circle class="ring-track" cx="60" cy="60" r="52"/><circle class="ring-bar" cx="60" cy="60" r="52"/></svg>
+      <svg class="ring-svg" viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-track" cx="60" cy="60" r="52"/><circle class="ring-bar" cx="60" cy="60" r="52"/></svg>
       <div class="ring-dot" id="loaderDot"></div>
       <div class="pct" id="loaderPct">0%</div>
     </div>
@@ -621,7 +719,7 @@ img[loading="lazy"].img-loaded{opacity:1;}
     <b>Manisha&nbsp;Tushar</b>
     <small>SALON &amp; ACADEMY</small>
   </a>
-  <nav class="links">
+  <nav class="links" aria-label="Primary">
     <a href="#about">About</a>
     <a href="#services">Services</a>
     <a href="#academy">Academy</a>
@@ -630,28 +728,37 @@ img[loading="lazy"].img-loaded{opacity:1;}
     <a href="#contact">Contact</a>
   </nav>
   <div class="hdr-right">
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode" aria-pressed="false">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
     </button>
     <a href="https://wa.me/917014415988" class="btn solid magnetic" style="display:none" id="navBook"><span>Book Now</span></a>
-    <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<div id="mobileNav">
-  <button class="close" id="mobileClose">CLOSE ✕</button>
+<nav id="mobileNav" aria-label="Mobile">
+  <button class="close" id="mobileClose" aria-label="Close menu">CLOSE ✕</button>
   <a href="#about">About</a>
   <a href="#services">Services</a>
   <a href="#academy">Academy</a>
   <a href="#gallery">Gallery</a>
   <a href="#reviews">Reviews</a>
   <a href="#contact">Contact</a>
-</div>
+</nav>
+
 
 <main id="top">
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <picture>
+        <source media="(max-width:900px)" srcset="images/hero-bg-mobile.webp" type="image/webp">
+        <source media="(max-width:900px)" srcset="images/hero-bg-mobile.jpg" type="image/jpeg">
+        <source srcset="images/hero-bg-desktop.webp" type="image/webp">
+        <img src="images/hero-bg-desktop.jpg" alt="" loading="eager" fetchpriority="high" decoding="async" width="1920" height="1092">
+      </picture>
+    </div>
     <div class="wrap hero-inner">
       <div class="eyebrow" id="heroEyebrow">Dadabari, Kota · 4.7★ Justdial · 347 Reviews</div>
       <h1 style="margin-top:22px;">
@@ -662,16 +769,6 @@ img[loading="lazy"].img-loaded{opacity:1;}
       <div class="hero-ctas" id="heroCtas">
         <a href="https://wa.me/917014415988" class="btn solid magnetic"><span>Book an Appointment</span></a>
         <a href="#academy" class="btn magnetic"><span>Explore the Academy</span></a>
-      </div>
-    </div>
-
-    <div class="hero-float" id="heroFloat">
-      <div class="card3d" id="card3d">
-        <img src="https://images.unsplash.com/photo-1673413350047-ea5c0fd58c9e?q=80&w=600&auto=format&fit=crop" alt="Bridal makeup and gold jewellery detail" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.1) brightness(.65) saturate(1.2);z-index:0;">
-        <div style="position:relative;z-index:1;">
-          <small>SIGNATURE SERVICE</small>
-          <strong>Bridal HD Makeup</strong>
-        </div>
       </div>
     </div>
 
@@ -729,7 +826,7 @@ img[loading="lazy"].img-loaded{opacity:1;}
     <div class="wrap">
       <div class="section-head">
         <div class="eyebrow reveal">What We Do</div>
-        <h2 class="reveal">Four disciplines. <span class="stroke">One standard<svg viewBox="0 0 200 20"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
+        <h2 class="reveal">Four disciplines. <span class="stroke">One standard<svg viewBox="0 0 200 20" aria-hidden="true"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
         <p class="reveal">Tap a discipline below, then tap the card to see what's inside. Every service is performed by a specialist, not a generalist.</p>
       </div>
 
@@ -745,9 +842,9 @@ img[loading="lazy"].img-loaded{opacity:1;}
         <div class="flip-card reveal" data-cat="hair">
           <div class="flip-inner">
             <div class="flip-face flip-front" style="background:linear-gradient(155deg,#5a1f26,#150507);">
-              <img src="images/hair.jpg" alt="Hair styling at the salon" loading="lazy">
+              <img src="images/hair.jpg" alt="Hair styling at the salon" loading="lazy" decoding="async">
               <div class="front-overlay"></div>
-              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M4 4c4 0 6 4 8 10s4 6 8 6M4 20c4 0 6-4 8-10s4-6 8-6"/></svg></div>
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4c4 0 6 4 8 10s4 6 8 6M4 20c4 0 6-4 8-10s4-6 8-6"/></svg></div>
               <div><h3>Hair</h3><span class="tap-hint">Tap to see services</span></div>
             </div>
             <div class="flip-face flip-back">
@@ -767,9 +864,9 @@ img[loading="lazy"].img-loaded{opacity:1;}
         <div class="flip-card reveal" data-cat="skin">
           <div class="flip-inner">
             <div class="flip-face flip-front" style="background:linear-gradient(155deg,#7a3b2e,#2a0e12);">
-              <img src="images/skin___spa.jpg" alt="Facial spa treatment" loading="lazy">
+              <img src="images/skin___spa.jpg" alt="Facial spa treatment" loading="lazy" decoding="async">
               <div class="front-overlay"></div>
-              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 21c4-3 8-6.5 8-11a8 8 0 10-16 0c0 4.5 4 8 8 11z"/></svg></div>
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c4-3 8-6.5 8-11a8 8 0 10-16 0c0 4.5 4 8 8 11z"/></svg></div>
               <div><h3>Skin &amp; Spa</h3><span class="tap-hint">Tap to see services</span></div>
             </div>
             <div class="flip-face flip-back">
@@ -789,9 +886,9 @@ img[loading="lazy"].img-loaded{opacity:1;}
         <div class="flip-card reveal" data-cat="makeup">
           <div class="flip-inner">
             <div class="flip-face flip-front" style="background:linear-gradient(155deg,#3d151a,#8a6a2a);">
-              <img src="images/bridal___makeup.jpg" alt="Bridal makeup being applied" loading="lazy">
+              <img src="images/bridal___makeup.jpg" alt="Bridal makeup being applied" loading="lazy" decoding="async">
               <div class="front-overlay"></div>
-              <div class="icon-wrap"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z"/></svg></div>
               <div><h3>Makeup</h3><span class="tap-hint">Tap to see services</span></div>
             </div>
             <div class="flip-face flip-back">
@@ -811,9 +908,9 @@ img[loading="lazy"].img-loaded{opacity:1;}
         <div class="flip-card reveal" data-cat="nails">
           <div class="flip-inner">
             <div class="flip-face flip-front" style="background:linear-gradient(155deg,#6b2e3a,#150507);">
-              <img src="images/nails.jpg" alt="Nail art and manicure detailing" loading="lazy">
+              <img src="images/nails.jpg" alt="Nail art and manicure detailing" loading="lazy" decoding="async">
               <div class="front-overlay"></div>
-              <div class="icon-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+              <div class="icon-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
               <div><h3>Nails</h3><span class="tap-hint">Tap to see services</span></div>
             </div>
             <div class="flip-face flip-back">
@@ -844,10 +941,10 @@ img[loading="lazy"].img-loaded{opacity:1;}
       </div>
     </div>
     <div class="gallery-track" id="galleryTrack">
-      <div class="look-card look-1"><div class="bg"><img src="images/bridal_glam.jpg" alt="Bridal Glam look with gold jewellery" loading="lazy"></div><div class="content"><small>ATELIER 01</small><h3>Bridal Glam</h3><p>HD and airbrush bridal looks built around each face, not a template.</p></div></div>
-      <div class="look-card look-2"><div class="bg"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop" alt="Hair colour and styling tools" loading="lazy"></div><div class="content"><small>ATELIER 02</small><h3>Colour Studio</h3><p>Balayage and highlight work designed for depth and shine, not just shade.</p></div></div>
-      <div class="look-card look-3"><div class="bg"><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=1200&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy"></div><div class="content"><small>ATELIER 03</small><h3>Nail Design</h3><p>Extensions, art and precision finishing for every hand that walks in.</p></div></div>
-      <div class="look-card look-4"><div class="bg"><img src="https://images.unsplash.com/photo-1637777269308-6a072f24e8a4?q=80&w=1200&auto=format&fit=crop" alt="Academy training floor with styling chairs" loading="lazy"></div><div class="content"><small>ATELIER 04</small><h3>Academy Floor</h3><p>Where trainees practice live technique under working stylists.</p></div></div>
+      <div class="look-card look-1"><div class="bg"><img src="images/bridal_glam.jpg" alt="Bridal Glam look with gold jewellery" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 01</small><h3>Bridal Glam</h3><p>HD and airbrush bridal looks built around each face, not a template.</p></div></div>
+      <div class="look-card look-2"><div class="bg"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop" alt="Hair colour and styling tools" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 02</small><h3>Colour Studio</h3><p>Balayage and highlight work designed for depth and shine, not just shade.</p></div></div>
+      <div class="look-card look-3"><div class="bg"><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=1200&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 03</small><h3>Nail Design</h3><p>Extensions, art and precision finishing for every hand that walks in.</p></div></div>
+      <div class="look-card look-4"><div class="bg"><img src="https://images.unsplash.com/photo-1637777269308-6a072f24e8a4?q=80&w=1200&auto=format&fit=crop" alt="Academy training floor with styling chairs" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 04</small><h3>Academy Floor</h3><p>Where trainees practice live technique under working stylists.</p></div></div>
     </div>
   </section>
 
@@ -886,10 +983,10 @@ img[loading="lazy"].img-loaded{opacity:1;}
         <h2 class="reveal">Faces behind the chair.</h2>
       </div>
       <div class="team-grid">
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=800&auto=format&fit=crop" alt="Hair styling in progress" loading="lazy"><div class="info"><h3>Manisha</h3><span>CO-FOUNDER · HAIR</span><p>Known across Kota for precision cuts and finishing styles that actually hold — trained in Mumbai &amp; Delhi.</p></div></div>
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy"><div class="info"><h3>Tushar</h3><span>CO-FOUNDER · NAIL ARTIST</span><p>The hand behind the salon's nail art — from clean everyday polish to detailed acrylic design.</p></div></div>
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=800&auto=format&fit=crop" alt="Senior stylist at work" loading="lazy"><div class="info"><h3>Sushant Verma</h3><span>SENIOR HAIR PROFESSIONAL</span><p>Hair botox, spa &amp; massage. Regulars call him one of the most knowledgeable hands in the salon.</p></div></div>
-        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop" alt="Stylist finishing a client's look" loading="lazy"><div class="info"><h3>Pooja</h3><span>STYLIST</span><p>Named often by regulars for careful, dependable styling work.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?q=80&w=800&auto=format&fit=crop" alt="Hair styling in progress" loading="lazy" decoding="async"><div class="info"><h3>Manisha</h3><span>CO-FOUNDER · HAIR</span><p>Known across Kota for precision cuts and finishing styles that actually hold — trained in Mumbai &amp; Delhi.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy" decoding="async"><div class="info"><h3>Tushar</h3><span>CO-FOUNDER · NAIL ARTIST</span><p>The hand behind the salon's nail art — from clean everyday polish to detailed acrylic design.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=800&auto=format&fit=crop" alt="Senior stylist at work" loading="lazy" decoding="async"><div class="info"><h3>Sushant Verma</h3><span>SENIOR HAIR PROFESSIONAL</span><p>Hair botox, spa &amp; massage. Regulars call him one of the most knowledgeable hands in the salon.</p></div></div>
+        <div class="team-card reveal"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=800&auto=format&fit=crop" alt="Stylist finishing a client's look" loading="lazy" decoding="async"><div class="info"><h3>Pooja</h3><span>STYLIST</span><p>Named often by regulars for careful, dependable styling work.</p></div></div>
       </div>
     </div>
   </section>
@@ -983,10 +1080,10 @@ img[loading="lazy"].img-loaded{opacity:1;}
       <div class="contact-grid">
         <div>
           <div class="contact-info reveal">
-            <div class="row"><svg viewBox="0 0 24 24"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><b>Address</b><span>1-DA-25, near Dispensary, Dadabari Extension, Dadabari, Kota, Rajasthan 324009</span></div></div>
-            <div class="row"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Hours</b><span>Mon–Sat, 10:00 AM – 9:00 PM. Sunday hours vary — call ahead.</span></div></div>
-            <div class="row"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2z"/></svg><div><b>Phone / WhatsApp</b><span>+91 70144 15988</span></div></div>
-            <div class="row"><svg viewBox="0 0 24 24" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg><div><b>Instagram</b><span>@manishatusharsalonandacademy</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><b>Address</b><span>1-DA-25, near Dispensary, Dadabari Extension, Dadabari, Kota, Rajasthan 324009</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Hours</b><span>Mon–Sat, 10:00 AM – 9:00 PM. Sunday hours vary — call ahead.</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8 9.9a16 16 0 006 6l1.4-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.8 2z"/></svg><div><b>Phone / WhatsApp</b><span>+91 70144 15988</span></div></div>
+            <div class="row"><svg viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg><div><b>Instagram</b><span>@manishatusharsalonandacademy</span></div></div>
           </div>
 
           <div style="margin-top:40px" class="reveal">
@@ -1048,6 +1145,7 @@ img[loading="lazy"].img-loaded{opacity:1;}
 </footer>
 
 <script>
+document.addEventListener('DOMContentLoaded', function(){
 gsap.registerPlugin(ScrollTrigger);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1105,10 +1203,10 @@ window.addEventListener('load', () => {
 
 function playHero(){
   const tl = gsap.timeline();
-  tl.to('.hero h1 .line span', {y:'0%', duration:1, stagger:.12, ease:'power4.out'})
+  tl.fromTo('.hero-bg', {opacity:0, scale:1.06}, {opacity:1, scale:1, duration:1.4, ease:'power2.out'})
+    .to('.hero h1 .line span', {y:'0%', duration:1, stagger:.12, ease:'power4.out'}, '-=1')
     .to('#heroSub', {opacity:1, duration:.8, ease:'power2.out'}, '-=.5')
-    .to('#heroCtas', {opacity:1, duration:.8, ease:'power2.out'}, '-=.6')
-    .fromTo('#heroFloat', {opacity:0, y:40}, {opacity:1, y:0, duration:1, ease:'power3.out'}, '-=.7');
+    .to('#heroCtas', {opacity:1, duration:.8, ease:'power2.out'}, '-=.6');
 }
 
 /* ---------- Header scroll state ---------- */
@@ -1125,14 +1223,15 @@ ScrollTrigger.create({
 /* ---------- Mobile nav ---------- */
 const mobileBtn = document.getElementById('mobileBtn');
 const mobileNav = document.getElementById('mobileNav');
-mobileBtn.addEventListener('click', ()=> mobileNav.classList.add('open'));
-document.getElementById('mobileClose').addEventListener('click', ()=> mobileNav.classList.remove('open'));
-mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>mobileNav.classList.remove('open')));
+mobileBtn.addEventListener('click', ()=>{ mobileNav.classList.add('open'); mobileBtn.setAttribute('aria-expanded','true'); });
+document.getElementById('mobileClose').addEventListener('click', ()=>{ mobileNav.classList.remove('open'); mobileBtn.setAttribute('aria-expanded','false'); });
+mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{ mobileNav.classList.remove('open'); mobileBtn.setAttribute('aria-expanded','false'); }));
 
 /* ---------- Theme toggle ---------- */
 const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('click', ()=>{
-  document.documentElement.classList.toggle('light');
+  const isLight = document.documentElement.classList.toggle('light');
+  themeToggle.setAttribute('aria-pressed', String(isLight));
 });
 
 /* ---------- Magnetic buttons ---------- */
@@ -1142,21 +1241,9 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
     const x = e.clientX - r.left - r.width/2;
     const y = e.clientY - r.top - r.height/2;
     gsap.to(btn, {x:x*0.35, y:y*0.5, duration:.4, ease:'power3.out'});
-  });
+  }, {passive:true});
   btn.addEventListener('mouseleave', ()=> gsap.to(btn, {x:0, y:0, duration:.5, ease:'elastic.out(1,.4)'}));
 });
-
-/* ---------- 3D floating card tilt ---------- */
-const heroFloat = document.getElementById('heroFloat');
-const card3d = document.getElementById('card3d');
-if (heroFloat){
-  window.addEventListener('mousemove', e=>{
-    const rx = (e.clientY / window.innerHeight - .5) * -14;
-    const ry = (e.clientX / window.innerWidth - .5) * 14;
-    gsap.to(card3d, {rotateX:rx, rotateY:ry, duration:.6, ease:'power2.out'});
-  });
-  gsap.to(card3d, {y:-16, duration:2.6, ease:'sine.inOut', yoyo:true, repeat:-1});
-}
 
 /* ---------- Generic scroll reveals ---------- */
 gsap.utils.toArray('.reveal').forEach(el=>{
@@ -1252,7 +1339,7 @@ document.querySelectorAll('.look-card').forEach(card=>{
     const rx = ((e.clientY - r.top)/r.height - .5) * -10;
     const ry = ((e.clientX - r.left)/r.width - .5) * 10;
     gsap.to(card, {rotateX:rx, rotateY:ry, duration:.4, ease:'power2.out', transformPerspective:800});
-  });
+  }, {passive:true});
   card.addEventListener('mouseleave', ()=> gsap.to(card, {rotateX:0, rotateY:0, duration:.6}));
 });
 
@@ -1279,40 +1366,64 @@ document.querySelectorAll('.faq-item').forEach(item=>{
   });
 });
 
-/* ---------- Particles background ---------- */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particles = [];
-function resizeCanvas(){
-  canvas.width = window.innerWidth;
-  canvas.height = document.body.scrollHeight;
-}
-function initParticles(){
-  particles = Array.from({length: Math.min(70, window.innerWidth/16)}, ()=>({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    r: Math.random()*1.6+0.4,
-    vy: Math.random()*.3+.05,
-    o: Math.random()*.5+.15
-  }));
-}
-function drawParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  const gold = getComputedStyle(document.documentElement).getPropertyValue('--gold-300').trim();
-  particles.forEach(p=>{
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(230,200,120,${p.o})`;
-    ctx.fill();
-    p.y -= p.vy;
-    if (p.y < -10){ p.y = canvas.height + 10; p.x = Math.random()*canvas.width; }
+/* ---------- Particles background ----------
+   Canvas is position:fixed and viewport-sized in CSS, so the drawing
+   buffer now matches viewport height (not full page scrollHeight).
+   Previously the buffer was as tall as the entire page, which meant
+   clearRect+arc ran over a huge off-screen area on every single frame —
+   the single biggest FPS cost on this page. Also pauses when the tab
+   is hidden and starts after first paint instead of blocking it. */
+(function(){
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d', {alpha:true});
+  let particles = [];
+  let raf = null;
+  let dpr = Math.min(window.devicePixelRatio || 1, 1.5); // cap DPR: crisp enough, far cheaper than native retina res
+
+  function resizeCanvas(){
+    canvas.width = Math.round(window.innerWidth * dpr);
+    canvas.height = Math.round(window.innerHeight * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function initParticles(){
+    const count = Math.min(50, Math.round(window.innerWidth/20));
+    particles = Array.from({length: count}, ()=>({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      r: Math.random()*1.6+0.4,
+      vy: Math.random()*.3+.05,
+      o: Math.random()*.5+.15
+    }));
+  }
+  function drawParticles(){
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(230,200,120,${p.o})`;
+      ctx.fill();
+      p.y -= p.vy;
+      if (p.y < -10){ p.y = window.innerHeight + 10; p.x = Math.random()*window.innerWidth; }
+    });
+    raf = requestAnimationFrame(drawParticles);
+  }
+  let resizeTimer;
+  function onResize(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(()=>{ resizeCanvas(); }, 150);
+  }
+  document.addEventListener('visibilitychange', ()=>{
+    if (document.hidden){ if (raf) cancelAnimationFrame(raf); raf = null; }
+    else if (!raf && !reduceMotion){ drawParticles(); }
   });
-  requestAnimationFrame(drawParticles);
-}
-if (!reduceMotion){
-  resizeCanvas(); initParticles(); drawParticles();
-  window.addEventListener('resize', ()=>{ resizeCanvas(); });
-}
+  if (!reduceMotion){
+    resizeCanvas(); initParticles();
+    // Defer first paint of the ambient layer until the browser is idle,
+    // so it never competes with critical rendering/hero animation.
+    (window.requestIdleCallback || function(cb){ setTimeout(cb, 300); })(drawParticles);
+    window.addEventListener('resize', onResize);
+  }
+})();
 
 /* ---------- Refresh ScrollTrigger after full load ---------- */
 window.addEventListener('load', ()=> ScrollTrigger.refresh());
@@ -1328,17 +1439,18 @@ if (fineDevice && !reduceMotion){
   const ring = document.getElementById('cursorRing');
   const label = document.getElementById('cursorLabel');
   let mx=0,my=0, rx=0,ry=0;
-  window.addEventListener('mousemove', e=>{
-    mx=e.clientX; my=e.clientY;
-    gsap.set(dot, {x:mx, y:my});
-    gsap.set(label, {x:mx, y:my});
-  });
+  // Record raw pointer position at native event rate (cheap: two numbers),
+  // but only touch the DOM once per animation frame via the ticker below —
+  // avoids redundant style writes on high-poll-rate mice/trackpads.
+  window.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; }, {passive:true});
   gsap.ticker.add(()=>{
     rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+    gsap.set(dot, {x:mx, y:my});
+    gsap.set(label, {x:mx, y:my});
     gsap.set(ring, {x:rx, y:ry});
   });
-  document.addEventListener('mousedown', ()=> ring.classList.add('is-down'));
-  document.addEventListener('mouseup', ()=> ring.classList.remove('is-down'));
+  document.addEventListener('mousedown', ()=> ring.classList.add('is-down'), {passive:true});
+  document.addEventListener('mouseup', ()=> ring.classList.remove('is-down'), {passive:true});
 
   const hoverables = 'a, button, .magnetic, .faq-q, .theme-toggle, .svc-rail button, input, textarea, .float-call, .flip-card, .faq-item';
   document.querySelectorAll(hoverables).forEach(el=>{
@@ -1356,17 +1468,22 @@ if (fineDevice && !reduceMotion){
   });
 }
 
-/* ---------- Scroll progress bar ---------- */
+/* ---------- Scroll progress bar (rAF-throttled: one style write per frame max) ---------- */
 (function(){
   const bar = document.getElementById('scrollProgress');
+  let ticking = false;
   function update(){
     const h = document.documentElement;
     const scrolled = h.scrollTop;
     const max = h.scrollHeight - h.clientHeight;
     bar.style.width = (max>0 ? (scrolled/max)*100 : 0) + '%';
+    ticking = false;
   }
-  window.addEventListener('scroll', update, {passive:true});
-  window.addEventListener('resize', update);
+  function onScroll(){
+    if (!ticking){ requestAnimationFrame(update); ticking = true; }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
   update();
 })();
 
@@ -1444,6 +1561,7 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
     if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLb();
   });
 })();
+}); // end DOMContentLoaded
 </script>
 <div class="quote-modal" id="quoteModal" role="dialog" aria-modal="true" aria-labelledby="quoteModalTitle">
   <div class="quote-modal__backdrop" id="quoteModalBackdrop"></div>
@@ -1480,7 +1598,7 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
 </div>
 
 <a class="float-call" href="tel:+917014415988" aria-label="Call the salon: +91 70144 15988">
-  <svg viewBox="0 0 24 24"><path d="M4 5c0 8 7 15 15 15l2-4-5-2-1.5 2A12 12 0 0 1 8.5 9.5L10.5 8 8.5 3 4.5 5z"/></svg>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5c0 8 7 15 15 15l2-4-5-2-1.5 2A12 12 0 0 1 8.5 9.5L10.5 8 8.5 3 4.5 5z"/></svg>
 </a>
 
 <script>
