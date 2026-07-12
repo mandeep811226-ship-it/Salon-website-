@@ -236,8 +236,8 @@ nav.links a:hover{opacity:1;}
 html.light .hero{background:var(--maroon-950);}
 
 .hero-bg{position:absolute;inset:0;z-index:0;}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:78% 30%;}
-@media(max-width:900px){.hero-bg img{object-position:70% 22%;}}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:62% 32%;}
+@media(max-width:900px){.hero-bg img{object-position:46% 22%;}}
 .hero-bg::before{
   /* horizontal scrim: opaque over the copy on the left, sheer over the portrait on the right */
   content:'';position:absolute;inset:0;z-index:1;
@@ -253,8 +253,8 @@ html.light .hero{background:var(--maroon-950);}
   .hero-bg::after{background:linear-gradient(180deg, rgba(21,5,7,.05) 0%, rgba(21,5,7,0) 40%, rgba(21,5,7,.9) 100%);}
 }
 
-.hero-inner{position:relative;z-index:3;}
-.hero h1{font-size:clamp(44px,8vw,108px);color:var(--ivory-50);}
+.hero-inner{position:relative;z-index:3;max-width:760px;}
+.hero h1{font-size:clamp(40px,7.2vw,92px);color:var(--ivory-50);}
 .hero h1 .line{overflow:hidden;display:block;}
 .hero h1 .line span{display:inline-block;transform:translateY(105%);}
 .hero-sub{max-width:520px;margin-top:26px;font-size:16px;line-height:1.7;color:rgba(247,239,228,.78);opacity:0;}
@@ -756,7 +756,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
         <source media="(max-width:900px)" srcset="images/hero-bg-mobile.webp" type="image/webp">
         <source media="(max-width:900px)" srcset="images/hero-bg-mobile.jpg" type="image/jpeg">
         <source srcset="images/hero-bg-desktop.webp" type="image/webp">
-        <img src="images/hero-bg-desktop.jpg" alt="" loading="eager" fetchpriority="high" decoding="async" width="1920" height="1092">
+        <img src="images/hero-bg-desktop.jpg" alt="" loading="eager" fetchpriority="high" decoding="async" width="2000" height="963">
       </picture>
     </div>
     <div class="wrap hero-inner">
