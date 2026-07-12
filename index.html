@@ -404,6 +404,33 @@ section{position:relative;z-index:2;padding:140px 0;}
 .test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
 @media(max-width:900px){.test-grid{grid-template-columns:1fr 1fr;}}
 @media(max-width:640px){.test-grid{grid-template-columns:1fr;}}
+
+/* ---------- Reviews: vertical column slider (user-scrollable) ---------- */
+.test-marquee{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;
+  height:620px;position:relative;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image:linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+}
+@media(max-width:900px){.test-marquee{grid-template-columns:1fr 1fr;height:520px;gap:16px;}}
+@media(max-width:640px){
+  .test-marquee{
+    grid-template-columns:1fr;height:64vh;min-height:400px;max-height:560px;
+    -webkit-mask-image:linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+    mask-image:linear-gradient(to bottom, transparent, #000 6%, #000 94%, transparent);
+  }
+}
+.test-col{overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;cursor:grab;-webkit-overflow-scrolling:touch;touch-action:pan-y;overscroll-behavior:contain;}
+.test-col::-webkit-scrollbar{display:none;}
+.test-col.dragging{cursor:grabbing;scroll-behavior:auto;}
+.test-col .test-track{display:flex;flex-direction:column;gap:24px;}
+@media(max-width:640px){.test-col .test-track{gap:16px;}}
+.test-hint{text-align:center;margin-top:16px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dim);opacity:.75;}
+@media(max-width:640px){
+  .test-marquee .test-card{padding:22px 20px;}
+  .test-marquee .test-card p{font-size:13.5px;line-height:1.65;}
+  .test-marquee .test-card .stars{font-size:14px;}
+}
 .test-card{border:1px solid var(--line);padding:32px;background:var(--card);}
 .stars{display:flex;gap:3px;margin-bottom:18px;}
 .stars svg{width:14px;height:14px;fill:var(--gold-400);}
@@ -474,9 +501,6 @@ html.light .price-card.featured{background:linear-gradient(165deg,#f4e3c4,#fff);
 .contact-info .row svg{width:18px;height:18px;stroke:var(--gold-400);fill:none;stroke-width:1.4;flex-shrink:0;margin-top:2px;}
 .contact-info .row b{display:block;font-size:14px;}
 .contact-info .row span{font-size:13.5px;color:var(--fg-dim);}
-.social-row{display:flex;gap:14px;margin-top:26px;}
-.social-row a{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-.social-row a svg{width:16px;height:16px;stroke:var(--fg);fill:none;}
 .map-embed{width:100%;height:100%;min-height:340px;border:1px solid var(--line);filter:grayscale(.4) contrast(1.05);}
 html.light .map-embed{filter:none;}
 
@@ -486,6 +510,65 @@ html.light .map-embed{filter:none;}
 .field input:focus,.field textarea:focus{outline:1px solid var(--gold-400);}
 .field textarea{resize:vertical;min-height:100px;}
 .field .optional{text-transform:none;letter-spacing:0;opacity:.7;font-family:var(--sans);}
+.social-row{display:flex;gap:14px;margin-top:26px;}
+.social-row a{width:40px;height:40px;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.social-row a svg{width:16px;height:16px;stroke:var(--fg);fill:none;}
+/* ===== Booking section (enhanced) ===== */
+.book-layout{display:grid;grid-template-columns:1.35fr .95fr;gap:56px;align-items:start;margin-top:6px;}
+@media(max-width:960px){.book-layout{grid-template-columns:1fr;gap:44px;}}
+.book-side{display:flex;flex-direction:column;gap:26px;}
+
+.book-card{position:relative;background:linear-gradient(160deg,var(--maroon-900),var(--maroon-950));border:1px solid var(--line);padding:46px 42px 42px;overflow:hidden;isolation:isolate;}
+html.light .book-card{background:linear-gradient(160deg,#fff,var(--bg-alt));}
+@media(max-width:640px){.book-card{padding:34px 22px 28px;}}
+.book-card::before,.book-card::after{content:'';position:absolute;width:28px;height:28px;border:1px solid var(--gold-400);opacity:.55;pointer-events:none;z-index:2;}
+.book-card::before{top:16px;left:16px;border-right:none;border-bottom:none;}
+.book-card::after{bottom:16px;right:16px;border-left:none;border-top:none;}
+.book-card__glow{position:absolute;top:-30%;right:-15%;width:60%;height:70%;background:radial-gradient(circle,rgba(230,180,90,.16),transparent 70%);pointer-events:none;z-index:0;}
+.book-dot{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold-400);opacity:.5;animation:bookDotPulse 3.4s ease-in-out infinite;pointer-events:none;z-index:1;}
+@keyframes bookDotPulse{0%,100%{opacity:.22;transform:scale(1);}50%{opacity:.75;transform:scale(1.6);}}
+
+.book-step{position:relative;z-index:1;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:22px;}
+.book-step:not(:first-child){margin-top:38px;}
+.book-step::after{content:'';flex:1;height:1px;background:var(--line);}
+.book-step-num{width:24px;height:24px;border-radius:50%;border:1px solid var(--gold-400);color:var(--gold-300);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+
+.book-cat-tabs{position:relative;z-index:1;margin-bottom:22px;}
+.book-chip-grid{position:relative;z-index:1;margin-bottom:6px;}
+.book-chip-panel{display:none;flex-wrap:wrap;gap:10px;}
+.book-chip-panel.active{display:flex;}
+.book-chip{
+  padding:10px 17px;border:1px solid var(--line);background:transparent;color:var(--fg-dim);
+  font-family:var(--sans);font-size:13px;border-radius:100px;transition:.3s var(--ease-out);
+}
+.book-chip:hover{border-color:var(--gold-400);color:var(--fg);transform:translateY(-1px);}
+.book-chip.is-selected{background:var(--gold-400);border-color:var(--gold-400);color:var(--maroon-950);font-weight:600;}
+
+.book-selected{position:relative;z-index:1;margin-top:22px;padding-top:20px;border-top:1px solid var(--line);}
+.book-selected__label{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dim);display:block;margin-bottom:10px;}
+.book-selected__chips{display:flex;flex-wrap:wrap;gap:8px;}
+.book-selected__chips .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 8px 7px 14px;background:var(--card);border:1px solid var(--gold-400);border-radius:100px;font-size:12.5px;color:var(--fg);}
+.book-selected__chips .chip button{width:16px;height:16px;border-radius:50%;background:rgba(230,180,90,.18);color:var(--gold-300);display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;transition:.25s ease;}
+.book-selected__chips .chip button:hover{background:var(--gold-400);color:var(--maroon-950);}
+
+.book-fields-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+@media(max-width:520px){.book-fields-grid{grid-template-columns:1fr;}}
+
+.field select{width:100%;background:transparent;border:1px solid var(--line);padding:14px 16px;color:var(--fg);font-family:var(--sans);font-size:14px;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='%23cda24b' d='M5 7l5 6 5-6z'/></svg>");background-repeat:no-repeat;background-position:right 14px center;background-size:11px;}
+.field select:focus{outline:1px solid var(--gold-400);}
+.field select option{background:var(--maroon-900);color:var(--ivory-50);}
+
+.book-submit{position:relative;z-index:1;width:100%;justify-content:center;margin-top:10px;gap:10px;}
+.book-submit .wa-icon{width:16px;height:16px;fill:currentColor;}
+.book-note{position:relative;z-index:1;margin-top:14px;font-size:12px;color:var(--fg-dim);text-align:center;}
+
+.wa-preview{position:relative;border:1px solid var(--line);background:var(--card);padding:22px 22px 20px;overflow:hidden;}
+.wa-preview__head{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:14px;}
+.wa-dot{width:7px;height:7px;border-radius:50%;background:#25d366;box-shadow:0 0 0 3px rgba(37,211,102,.18);animation:waDotPulse 2s ease-in-out infinite;}
+@keyframes waDotPulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+.wa-bubble{background:linear-gradient(160deg,rgba(230,180,90,.1),rgba(230,180,90,.03));border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:14px 16px;}
+.wa-bubble p{font-size:13px;line-height:1.75;color:var(--fg);white-space:pre-line;min-height:22px;}
+.wa-bubble__time{display:block;margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--fg-dim);text-align:right;}
 
 /* ===== Quote request modal ===== */
 .quote-modal{position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;padding:24px;}
@@ -762,7 +845,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark mode" aria-pressed="false">
       <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke-width="1.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
     </button>
-    <a href="https://wa.me/917014415988" class="btn solid magnetic" style="display:none" id="navBook"><span>Book Now</span></a>
+    <a href="#contact" class="btn solid magnetic" style="display:none" id="navBook"><span>Book Now</span></a>
     <button class="mobile-menu-btn" id="mobileBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -798,7 +881,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       </h1>
       <p class="hero-sub" id="heroSub">Kota's atelier for hair, bridal artistry and nail design — and the academy where the next generation of stylists is trained. One address, every occasion, no compromise.</p>
       <div class="hero-ctas" id="heroCtas">
-        <a href="https://wa.me/917014415988" class="btn solid magnetic"><span>Book an Appointment</span></a>
+        <a href="#contact" class="btn solid magnetic"><span>Book an Appointment</span></a>
       </div>
     </div>
 
@@ -842,7 +925,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
           <p class="reveal">Every appointment is built around one idea — luxury isn't a service, it's a standard, held consistently, chair after chair, bride after bride.</p>
         </div>
         <div>
-          <div class="stats reveal">
+          <div class="stats">
             <div class="stat"><b data-count="4.7" data-decimals="1">0</b><span>Justdial Rating</span></div>
             <div class="stat"><b data-count="347">0</b><span>Verified Reviews</span></div>
             <div class="stat"><b data-count="5.0" data-decimals="1">0</b><span>Bewtee Rating</span></div>
@@ -987,23 +1070,80 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
         <div class="eyebrow reveal">Justdial · 4.7 / 5 · 347 Reviews</div>
         <h2 class="reveal">347 reasons to trust the chair.</h2>
       </div>
-      <div class="test-grid">
-        <div class="test-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>Consistently warm and clean — and the staff always ask before starting a treatment, even a simple massage.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Regular Client</b><span>2+ Years</span></div></footer>
-        </div>
-        <div class="test-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>The kind of place you can just sit and feel comfortable in — no rush, and no pressure to add on extra services.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Longtime Client</b><span>10+ Years</span></div></footer>
-        </div>
-        <div class="test-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>Fair pricing for the quality of work — every consultation feels attentive, never rushed, even for bridal bookings.</p>
-          <footer><div class="avatar"></div><div class="who"><b>Bridal Client</b><span>Hair &amp; Makeup</span></div></footer>
-        </div>
+      <div class="test-marquee" id="testMarquee">
+        <div class="test-col" id="testColA"><div class="test-track" id="testTrackA"></div></div>
+        <div class="test-col" id="testColB"><div class="test-track" id="testTrackB"></div></div>
+        <div class="test-col" id="testColC"><div class="test-track" id="testTrackC"></div></div>
       </div>
+      <p class="test-hint">Scroll, drag, or swipe any column — reviews move with you.</p>
+      <script>
+      /* Standalone — deliberately outside the GSAP-dependent handler below,
+         so reviews always populate and stay scrollable even if the GSAP
+         CDN is blocked or slow on the visitor's network. */
+      (function(){
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const reviews = [
+          ['Consistently warm and clean — and the staff always ask before starting a treatment, even a simple massage.', 'Regular Client', '2+ Years'],
+          ['Fair pricing for the quality of work — every consultation feels attentive, never rushed, even for bridal bookings.', 'Bridal Client', 'Hair & Makeup'],
+          ['The kind of place you can just sit and feel comfortable in — no rush, and no pressure to add on extra services.', 'Longtime Client', '10+ Years'],
+          ['Booked a last-minute bridal trial and they still took the time to get it exactly right before the wedding.', 'Wedding Client', 'Bridal Package'],
+          ['My colour has never held this well — they actually listen before picking a shade instead of pushing one.', 'Colour Client', '3+ Years'],
+          ['Clean, professional, and the academy trainees are supervised closely — never felt like a guinea pig.', 'Academy Client', 'Hair & Spa']
+        ];
+        function reviewCard(r){
+          return '<div class="test-card"><div class="stars">★★★★★</div><p>'+r[0]+'</p><footer><div class="avatar"></div><div class="who"><b>'+r[1]+'</b><span>'+r[2]+'</span></div></footer></div>';
+        }
+        const cols = [[reviews[0],reviews[3]],[reviews[1],reviews[4]],[reviews[2],reviews[5]]];
+        ['testTrackA','testTrackB','testTrackC'].forEach(function(id, idx){
+          const el = document.getElementById(id);
+          if(!el) return;
+          el.innerHTML = cols[idx].map(reviewCard).join('') + cols[idx].map(reviewCard).join('');
+        });
+        function setupColumn(col, direction){
+          if(!col) return;
+          let paused=false, resumeTimer=null, isDown=false, startY=0, startScroll=0;
+          function frame(){
+            if(!paused && !isDown && !reduceMotion){
+              col.scrollTop += direction*0.4;
+              const half = col.scrollHeight/2;
+              if(col.scrollTop >= half) col.scrollTop -= half;
+              if(col.scrollTop <= 0) col.scrollTop += half;
+            }
+            requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+          function pauseThenResume(){ paused=true; clearTimeout(resumeTimer); resumeTimer=setTimeout(function(){ paused=false; },1800); }
+          // Touch: let the browser's native scrolling own the gesture entirely —
+          // we only pause the auto-drift while a finger is on the column, and
+          // let it resume once the touch ends. No manual scrollTop writes here,
+          // since fighting the native scroll is what made this feel broken on phones.
+          col.addEventListener('touchstart', pauseThenResume, {passive:true});
+          col.addEventListener('touchmove', pauseThenResume, {passive:true});
+          col.addEventListener('touchend', pauseThenResume, {passive:true});
+          col.addEventListener('wheel', pauseThenResume, {passive:true});
+          // Mouse / pen: custom click-and-drag, since desktop browsers don't
+          // let you drag-to-scroll a div by default the way touch does.
+          col.addEventListener('pointerdown', function(e){
+            if(e.pointerType === 'touch') return;
+            isDown=true; startY=e.clientY; startScroll=col.scrollTop;
+            col.classList.add('dragging'); col.setPointerCapture(e.pointerId);
+          });
+          col.addEventListener('pointermove', function(e){
+            if(!isDown || e.pointerType === 'touch') return;
+            col.scrollTop = startScroll - (e.clientY - startY);
+          });
+          ['pointerup','pointerleave','pointercancel'].forEach(function(evt){
+            col.addEventListener(evt, function(e){
+              if(e.pointerType === 'touch') return;
+              if(isDown){ isDown=false; col.classList.remove('dragging'); pauseThenResume(); }
+            });
+          });
+        }
+        setupColumn(document.getElementById('testColA'), 1);
+        setupColumn(document.getElementById('testColB'), -1);
+        setupColumn(document.getElementById('testColC'), 1);
+      })();
+      </script>
     </div>
   </section>
 
@@ -1106,11 +1246,91 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   <section id="contact">
     <div class="wrap">
       <div class="section-head">
-        <div class="eyebrow reveal">Come In</div>
-        <h2 class="reveal">Find us in Dadabari.</h2>
+        <div class="eyebrow reveal">Reserve Your Chair</div>
+        <h2 class="reveal">Book your appointment<span class="stroke"> in two steps<svg viewBox="0 0 200 20" aria-hidden="true"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
+        <p class="reveal">Pick what you're in for, tell us when suits you, and we'll confirm your slot on WhatsApp — usually within the hour. Prefer to just walk in? Our Dadabari address and hours are alongside.</p>
       </div>
-      <div class="contact-grid">
-        <div>
+
+      <div class="book-layout">
+        <div class="book-card reveal">
+          <div class="book-card__glow"></div>
+          <span class="book-dot" style="top:30px;right:74px;"></span>
+          <span class="book-dot" style="bottom:140px;left:-4px;width:6px;height:6px;animation-delay:.6s;"></span>
+          <span class="book-dot" style="top:46%;right:-4px;width:5px;height:5px;animation-delay:1.4s;"></span>
+
+          <div class="book-step"><span class="book-step-num">01</span><span>Choose a discipline</span></div>
+
+          <div class="svc-rail book-cat-tabs" id="bookCatTabs">
+            <button type="button" class="active" data-cat="hair" style="--c:var(--maroon-700)"><span class="dot" style="background:var(--maroon-700)"></span>Hair</button>
+            <button type="button" data-cat="skin" style="--c:var(--gold-400)"><span class="dot" style="background:var(--gold-400)"></span>Skin &amp; Spa</button>
+            <button type="button" data-cat="makeup" style="--c:var(--gold-300)"><span class="dot" style="background:var(--gold-300)"></span>Makeup</button>
+            <button type="button" data-cat="nails" style="--c:var(--rose-300)"><span class="dot" style="background:var(--rose-300)"></span>Nails</button>
+          </div>
+
+          <div class="book-chip-grid" id="bookChipGrid">
+            <div class="book-chip-panel active" data-cat="hair">
+              <button type="button" class="book-chip">Haircut &amp; styling</button>
+              <button type="button" class="book-chip">Balayage &amp; highlighting</button>
+              <button type="button" class="book-chip">Keratin treatment</button>
+              <button type="button" class="book-chip">Extensions &amp; updos</button>
+              <button type="button" class="book-chip">Blow dry &amp; straightening</button>
+            </div>
+            <div class="book-chip-panel" data-cat="skin">
+              <button type="button" class="book-chip">Facial &amp; skin care</button>
+              <button type="button" class="book-chip">Body &amp; Brazilian waxing</button>
+              <button type="button" class="book-chip">Full body massage</button>
+              <button type="button" class="book-chip">Hand &amp; foot massage</button>
+              <button type="button" class="book-chip">Threading &amp; shaping</button>
+            </div>
+            <div class="book-chip-panel" data-cat="makeup">
+              <button type="button" class="book-chip">HD &amp; airbrush makeup</button>
+              <button type="button" class="book-chip">Bridal hair design</button>
+              <button type="button" class="book-chip">Wedding &amp; event prep</button>
+              <button type="button" class="book-chip">Trial sitting</button>
+              <button type="button" class="book-chip">On-location styling</button>
+            </div>
+            <div class="book-chip-panel" data-cat="nails">
+              <button type="button" class="book-chip">Acrylic &amp; extensions</button>
+              <button type="button" class="book-chip">Nail art &amp; design</button>
+              <button type="button" class="book-chip">Manicure &amp; pedicure</button>
+              <button type="button" class="book-chip">Men's manicure</button>
+              <button type="button" class="book-chip">Callus removal</button>
+            </div>
+          </div>
+
+          <div class="book-selected" id="bookSelected" hidden>
+            <span class="book-selected__label">Selected for you</span>
+            <div class="book-selected__chips" id="bookSelectedChips"></div>
+          </div>
+
+          <div class="field" style="margin-top:20px;"><label>Something else in mind? <span class="optional">(optional)</span></label><input type="text" id="cfCustomService" placeholder="Type any other service or request"></div>
+
+          <div class="book-step"><span class="book-step-num">02</span><span>Your details</span></div>
+
+          <div class="book-fields-grid">
+            <div class="field"><label>Name</label><input type="text" id="cfName" placeholder="Your name"></div>
+            <div class="field"><label>Phone <span class="optional">(optional)</span></label><input type="tel" id="cfPhone" placeholder="98765 43210" inputmode="tel"></div>
+            <div class="field"><label>Preferred date</label><input type="date" id="cfDate"></div>
+            <div class="field">
+              <label>Preferred time</label>
+              <select id="cfTime">
+                <option value="">Any time</option>
+                <option>Morning · 10 AM–1 PM</option>
+                <option>Afternoon · 1–5 PM</option>
+                <option>Evening · 5–9 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Anything else? <span class="optional">(optional)</span></label><textarea id="cfMessage" placeholder="Reference photos, occasion, allergies — whatever helps us prep"></textarea></div>
+
+          <button type="button" class="btn solid magnetic book-submit" id="cfSendBtn">
+            <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1-.3-.1-.5-.1-.6.1-.2.3-.7 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.4 0-.5C10 9 9.5 7.7 9.3 7.2 9.1 6.7 8.9 6.7 8.7 6.7h-.5c-.2 0-.5.1-.7.3-.2.3-1 1-1 2.3 0 1.4 1 2.7 1.1 2.9.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.3z"/><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z"/></svg>
+            <span>Send via WhatsApp</span>
+          </button>
+          <p class="book-note">Replies within the hour during salon hours · No account or OTP needed</p>
+        </div>
+
+        <div class="book-side">
           <div class="contact-info reveal">
             <div class="row"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg><div><b>Address</b><span>1-DA-25, near Dispensary, Dadabari Extension, Dadabari, Kota, Rajasthan 324009</span></div></div>
             <div class="row"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><div><b>Hours</b><span>Mon–Sat, 10:00 AM – 9:00 PM. Sunday hours vary — call ahead.</span></div></div>
@@ -1118,15 +1338,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
             <div class="row"><svg viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg><div><b>Instagram</b><span>@manishatusharsalonandacademy</span></div></div>
           </div>
 
-          <div style="margin-top:40px" class="reveal">
-            <div class="field"><label>Name</label><input type="text" id="cfName" placeholder="Your name"></div>
-            <div class="field"><label>Preferred Service</label><input type="text" id="cfService" placeholder="e.g. Bridal Makeup, Balayage"></div>
-            <div class="field"><label>Message</label><textarea id="cfMessage" placeholder="Tell us your date and what you have in mind"></textarea></div>
-            <a href="https://wa.me/917014415988" class="btn solid magnetic" id="cfSendBtn"><span>Send via WhatsApp</span></a>
+          <div class="wa-preview reveal" id="waPreview">
+            <div class="wa-preview__head"><span class="wa-dot"></span>Live message preview</div>
+            <div class="wa-bubble">
+              <p id="waPreviewText">Hi! I'd like to book an appointment.</p>
+              <span class="wa-bubble__time">To +91 70144 15988</span>
+            </div>
           </div>
+
+          <iframe class="map-embed reveal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Manisha+Tushar+Salon+and+Academy+Dadabari+Kota+Rajasthan&output=embed"></iframe>
         </div>
-        <iframe class="map-embed reveal" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps?q=Manisha+Tushar+Salon+and+Academy+Dadabari+Kota+Rajasthan&output=embed"></iframe>
       </div>
     </div>
 
@@ -1138,21 +1360,110 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
     };
 
     (function(){
-      var btn = document.getElementById('cfSendBtn');
-      if(!btn) return;
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        var name = document.getElementById('cfName').value.trim();
-        var service = document.getElementById('cfService').value.trim();
-        var message = document.getElementById('cfMessage').value.trim();
+      var catTabs = document.getElementById('bookCatTabs');
+      var chipPanels = document.querySelectorAll('.book-chip-panel');
+      var selectedWrap = document.getElementById('bookSelected');
+      var selectedChipsEl = document.getElementById('bookSelectedChips');
+      var selected = [];
 
-        window.sendWhatsAppMessage([
-          'Hi! I\'d like to book an appointment.',
-          name ? 'Name: ' + name : '',
-          service ? 'Preferred Service: ' + service : '',
-          message ? 'Message: ' + message : ''
-        ]);
+      if (catTabs){
+        catTabs.querySelectorAll('button').forEach(function(btn){
+          btn.addEventListener('click', function(){
+            catTabs.querySelectorAll('button').forEach(function(b){
+              b.classList.remove('active');
+              b.style.background = 'transparent';
+              b.style.color = 'var(--fg)';
+            });
+            btn.classList.add('active');
+            var c = btn.style.getPropertyValue('--c');
+            btn.style.background = c;
+            btn.style.color = 'var(--maroon-950)';
+            chipPanels.forEach(function(p){ p.classList.toggle('active', p.dataset.cat === btn.dataset.cat); });
+          });
+        });
+      }
+
+      function renderSelected(){
+        if (!selected.length){ selectedWrap.hidden = true; selectedChipsEl.innerHTML = ''; return; }
+        selectedWrap.hidden = false;
+        selectedChipsEl.innerHTML = selected.map(function(s){
+          return '<span class="chip">' + s + '<button type="button" data-remove="' + s.replace(/"/g,'&quot;') + '" aria-label="Remove ' + s + '">&times;</button></span>';
+        }).join('');
+      }
+
+      document.querySelectorAll('.book-chip').forEach(function(chip){
+        chip.addEventListener('click', function(){
+          var label = chip.textContent.trim();
+          var idx = selected.indexOf(label);
+          if (idx > -1){ selected.splice(idx,1); chip.classList.remove('is-selected'); }
+          else { selected.push(label); chip.classList.add('is-selected'); }
+          renderSelected();
+          updatePreview();
+        });
       });
+
+      selectedChipsEl.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-remove]');
+        if (!btn) return;
+        var val = btn.getAttribute('data-remove');
+        selected = selected.filter(function(s){ return s !== val; });
+        document.querySelectorAll('.book-chip').forEach(function(chip){
+          if (chip.textContent.trim() === val) chip.classList.remove('is-selected');
+        });
+        renderSelected();
+        updatePreview();
+      });
+
+      function formatDate(iso){
+        if (!iso) return '';
+        var parts = iso.split('-'); // YYYY-MM-DD, avoid timezone-shift bugs from Date parsing
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var y = parts[0], m = parseInt(parts[1],10)-1, d = parseInt(parts[2],10);
+        return d + ' ' + months[m] + ' ' + y;
+      }
+
+      var nameEl = document.getElementById('cfName');
+      var phoneEl = document.getElementById('cfPhone');
+      var dateEl = document.getElementById('cfDate');
+      var timeEl = document.getElementById('cfTime');
+      var customEl = document.getElementById('cfCustomService');
+      var messageEl = document.getElementById('cfMessage');
+      var previewEl = document.getElementById('waPreviewText');
+
+      function buildLines(){
+        var services = selected.slice();
+        if (customEl && customEl.value.trim()) services.push(customEl.value.trim());
+        return [
+          'Hi! I\'d like to book an appointment.',
+          nameEl.value.trim() ? 'Name: ' + nameEl.value.trim() : '',
+          phoneEl.value.trim() ? 'Phone: ' + phoneEl.value.trim() : '',
+          services.length ? 'Service(s): ' + services.join(', ') : '',
+          dateEl.value ? 'Preferred Date: ' + formatDate(dateEl.value) : '',
+          timeEl.value ? 'Preferred Time: ' + timeEl.value : '',
+          messageEl.value.trim() ? 'Message: ' + messageEl.value.trim() : ''
+        ];
+      }
+
+      function updatePreview(){
+        if (!previewEl) return;
+        var lines = buildLines().filter(Boolean);
+        previewEl.textContent = lines.join('\n');
+      }
+
+      [nameEl, phoneEl, dateEl, timeEl, customEl, messageEl].forEach(function(el){
+        if (!el) return;
+        el.addEventListener('input', updatePreview);
+        el.addEventListener('change', updatePreview);
+      });
+      updatePreview();
+
+      var btn = document.getElementById('cfSendBtn');
+      if (btn){
+        btn.addEventListener('click', function(e){
+          e.preventDefault();
+          window.sendWhatsAppMessage(buildLines());
+        });
+      }
     })();
     </script>
   </section>
@@ -1366,6 +1677,29 @@ document.querySelectorAll('[data-count]').forEach(el=>{
   });
 });
 
+/* ---------- About stats: exploding objects reveal ----------
+   Each stat block is flung outward from a shared center point — like a
+   burst — spinning and blurred, then snaps into its grid slot exactly as
+   the number underneath starts counting up. Reverses on scroll-back-up
+   and replays every time, same as the team-card explode below it. */
+(function(){
+  const stats = gsap.utils.toArray('.stats .stat');
+  const n = stats.length || 1;
+  stats.forEach((stat, i)=>{
+    const angle = (i / n) * Math.PI * 2 + Math.PI/4;
+    const dx = Math.cos(angle) * 130;
+    const dy = Math.sin(angle) * 90;
+    gsap.fromTo(stat,
+      {opacity:0, x:dx, y:dy, scale:.3, rotation:(i%2===0 ? -20 : 20), filter:'blur(5px)'},
+      {
+        opacity:1, x:0, y:0, scale:1, rotation:0, filter:'blur(0px)',
+        duration:.95, ease:'power3.out', delay:i*0.07,
+        scrollTrigger:{trigger:'.stats', start:'top 88%', toggleActions:'restart none none reverse'}
+      }
+    );
+  });
+})();
+
 /* ---------- Services: layer-transformation reveal ----------
    Cards fly in from a stacked, receding-in-depth position AND alternate
    left/right horizontal entry per column — like layers sliding in from
@@ -1373,14 +1707,22 @@ document.querySelectorAll('[data-count]').forEach(el=>{
    directions (toggleActions handles the reverse-out on scroll-up). */
 gsap.utils.toArray('.flip-card').forEach((card, i)=>{
   const fromSide = i % 2 === 0 ? -90 : 90;
+  const st = {trigger:card, start:'top 88%', toggleActions:'restart none none reverse'};
   gsap.fromTo(card,
     {opacity:0, x:fromSide, y:50, z:-180, rotateX:-14, rotateY:fromSide>0?10:-10, scale:.86, transformPerspective:1000},
     {
       opacity:1, x:0, y:0, z:0, rotateX:0, rotateY:0, scale:1,
       duration:1, ease:'power3.out', delay:(i%4)*0.1,
-      scrollTrigger:{trigger:card, start:'top 88%', toggleActions:'restart none none reverse'}
+      scrollTrigger:st
     }
   );
+  const img = card.querySelector('.flip-front img');
+  if (img){
+    gsap.fromTo(img,
+      {filter:'brightness(.3) blur(4px)'},
+      {filter:'brightness(.92) blur(0px)', duration:1.2, ease:'power3.out', delay:(i%4)*0.1+.1, scrollTrigger:st}
+    );
+  }
 });
 
 /* ---------- Services: category rail + flip cards ---------- */
@@ -1483,14 +1825,24 @@ document.querySelectorAll('.look-card').forEach(card=>{
     const angle = (i / n) * Math.PI * 2;
     const dx = Math.cos(angle) * 240;
     const dy = Math.sin(angle) * 170;
+    const st = {trigger:'.team-grid', start:'top 82%', toggleActions:'restart none none reverse'};
     gsap.fromTo(card,
       {opacity:0, x:dx, y:dy, scale:.4, rotation:(i%2===0 ? -28 : 28), filter:'blur(6px)'},
       {
         opacity:1, x:0, y:0, scale:1, rotation:0, filter:'blur(0px)',
         duration:1.1, ease:'power3.out', delay:i*0.08,
-        scrollTrigger:{trigger:'.team-grid', start:'top 82%', toggleActions:'restart none none reverse'}
+        scrollTrigger:st
       }
     );
+    // Immersive zoom: the photo pulls into focus from a soft, dim blur as the
+    // card lands — independent of the CSS hover-zoom, which still works after.
+    const img = card.querySelector('img');
+    if (img){
+      gsap.fromTo(img,
+        {filter:'grayscale(.3) brightness(.4) blur(5px)'},
+        {filter:'grayscale(.3) brightness(.7) blur(0px)', duration:1.3, ease:'power3.out', delay:i*0.08+.1, scrollTrigger:st}
+      );
+    }
   });
 })();
 
@@ -1828,4 +2180,21 @@ document.querySelectorAll('img[loading="lazy"]').forEach(img=>{
     return d + ' ' + months[m] + ' ' + y;
   }
 
-  send
+  sendBtn.addEventListener('click', function(){
+    var service = serviceInput.value.trim();
+    var name = nameInput.value.trim();
+    var date = dateInput.value;
+    var message = messageInput.value.trim();
+    window.sendWhatsAppMessage([
+      'Hi! I\'d like to get a quote.',
+      service ? 'Package: ' + service : '',
+      name ? 'Name: ' + name : '',
+      date ? 'Appointment Date: ' + formatDate(date) : '',
+      message ? 'Message: ' + message : ''
+    ]);
+    closeModal();
+  });
+})();
+</script>
+</body>
+</html>
