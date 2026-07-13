@@ -26,15 +26,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://unpkg.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
 <link rel="dns-prefetch" href="https://images.unsplash.com">
 
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- GSAP: deferred so it never blocks first paint/HTML parsing. Inline scripts run
+<!-- GSAP + Lenis: deferred so they never block first paint/HTML parsing. Inline scripts run
      after DOM parse (placed at end of body) so execution order is still guaranteed. -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<!-- Lenis: buttery-smooth inertia scrolling, driven every frame by the GSAP ticker below so it stays in perfect sync with ScrollTrigger. -->
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
 
 <!-- Structured data for local business SEO -->
 <script type="application/ld+json">
@@ -150,6 +153,15 @@ body.no-gsap-fallback #heroSub,
 body.no-gsap-fallback #heroCtas,
 body.no-gsap-fallback .hero-bg{opacity:1 !important;transform:none !important;}
 body.no-gsap-fallback .stroke path{stroke-dashoffset:0 !important;}
+
+/* If the Lenis CDN is ever blocked/offline, this class (added by a dependency-free
+   fallback script, same pattern as no-gsap-fallback above) restores plain native
+   smooth scrolling so the page is never left feeling "stuck" or unscrollable. */
+html.no-lenis-fallback{scroll-behavior:smooth;}
+html.lenis, html.lenis body{height:auto;}
+.lenis.lenis-smooth{scroll-behavior:auto !important;}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain;}
+.lenis.lenis-stopped{overflow:hidden;}
 
 /* ===== Loader — brushstroke monogram + parting curtains ===== */
 #loader{
@@ -878,6 +890,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   // If gsap never loaded at all, don't even wait for the timeout — bail immediately once we know.
   window.addEventListener('load', function(){
     if (typeof window.gsap === 'undefined') reveal();
+    if (typeof window.Lenis === 'undefined') document.documentElement.classList.add('no-lenis-fallback');
   });
   // Absolute worst-case backstop: whatever happens, never stay hidden longer than this.
   setTimeout(reveal, 5000);
@@ -1616,6 +1629,31 @@ document.addEventListener('DOMContentLoaded', function(){
 gsap.registerPlugin(ScrollTrigger);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ---------- Lenis: global silky smooth-scroll ----------
+   Lenis intercepts wheel/touch input and eases the scroll position with its
+   own momentum curve instead of the browser's raw, jank-prone native scroll.
+   It's driven by gsap.ticker (rather than its own requestAnimationFrame loop)
+   so its timing source is identical to every ScrollTrigger-based animation on
+   the page — meaning parallax, reveals and pinning never drift out of sync
+   with what the user is actually seeing scroll past. Skipped entirely when
+   the visitor prefers reduced motion, or if the CDN failed to load. */
+let lenis = null;
+if (!reduceMotion && typeof window.Lenis !== 'undefined'){
+  lenis = new Lenis({
+    duration: 1.15,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    smoothTouch: false, // native touch scroll feels better on mobile; Lenis still eases wheel/trackpad
+    touchMultiplier: 1.6
+  });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+  window.lenis = lenis;
+} else {
+  document.documentElement.classList.add('no-lenis-fallback');
+}
+
 /* ---------- Loader ---------- */
 window.addEventListener('load', () => {
   const markWrap = document.getElementById('loaderMarkWrap');
@@ -1670,7 +1708,7 @@ window.addEventListener('load', () => {
 
 function playHero(){
   const tl = gsap.timeline();
-  tl.fromTo('.hero-bg', {opacity:0, scale:1.06}, {opacity:1, scale:1, duration:1.4, ease:'power2.out'})
+  tl.fromTo('.hero-bg', {opacity:0, scale:1.25}, {opacity:1, scale:1, duration:1.8, ease:'power2.out'})
     .to('.hero h1 .line span', {y:'0%', duration:1, stagger:.12, ease:'power4.out'}, '-=1')
     .to('#heroSub', {opacity:1, duration:.8, ease:'power2.out'}, '-=.5')
     .to('#heroCtas', {opacity:1, duration:.8, ease:'power2.out'}, '-=.6');
@@ -1909,6 +1947,7 @@ document.querySelectorAll('.flip-card').forEach(card=>{
    position) for a true parallax storytelling feel, forward AND backward. */
 gsap.utils.toArray('.look-card').forEach((card, i)=>{
   const fromSide = i % 2 === 0 ? -70 : 70;
+  const bgLayer = card.querySelector('.bg');
   gsap.fromTo(card,
     {opacity:0, x:fromSide, y:40, scale:.88},
     {
@@ -1916,6 +1955,18 @@ gsap.utils.toArray('.look-card').forEach((card, i)=>{
       scrollTrigger:{trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'}
     }
   );
+  // Awwwards-style unveil: the photo layer itself expands into view from a
+  // closed bottom-to-top mask, independent of the card's own fade/slide-in
+  // above, so the reveal reads as a curtain lifting rather than a plain fade.
+  if (bgLayer && !reduceMotion){
+    gsap.fromTo(bgLayer,
+      {clipPath:'inset(100% 0% 0% 0%)'},
+      {
+        clipPath:'inset(0% 0% 0% 0%)', duration:1.1, ease:'power4.inOut', delay:(i%4)*0.08+.05,
+        scrollTrigger:{trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'}
+      }
+    );
+  }
   const img = card.querySelector('.bg img');
   if (img && !reduceMotion){
     gsap.set(img, {yPercent:0});
@@ -2146,10 +2197,18 @@ if (fineDevice && !reduceMotion){
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener('click', e=>{
       const id = a.getAttribute('href');
-      if (!id || id === '#' || !document.querySelector(id)) return;
+      const target = id && id !== '#' ? document.querySelector(id) : null;
+      if (!target) return;
       wipe.classList.remove('run');
       void wipe.offsetWidth; // restart animation
       wipe.classList.add('run');
+      // Hand the actual scroll off to Lenis so in-page navigation (nav links,
+      // "Book Now", footer anchors) glides with the same eased momentum as
+      // every other scroll on the page, instead of a native instant/linear jump.
+      if (lenis){
+        e.preventDefault();
+        lenis.scrollTo(target, {offset: -84, duration: 1.3, easing: (t)=> 1 - Math.pow(1-t, 4)});
+      }
     });
   });
 })();
