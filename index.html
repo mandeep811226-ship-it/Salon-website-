@@ -841,8 +841,16 @@ img[loading="lazy"].img-loaded{opacity:1;}
 
 /* Render offscreen sections cheaply until they're near the viewport.
    Keeps initial layout/paint cost down on long single-page sites.
-   contain-intrinsic-size prevents scrollbar/CLS jumps on first estimate. */
-#about,#services,#academy,#gallery,#reviews,#pricing,#process,#faq,#contact{
+   contain-intrinsic-size prevents scrollbar/CLS jumps on first estimate.
+   #gallery is deliberately excluded: it's a pinned ScrollTrigger section
+   whose real height depends on a horizontal-scroll distance calculated in
+   JS from its actual laid-out width. content-visibility:auto would size
+   it using the 1400px placeholder below until it scrolled near, then
+   swap in its true (much taller, pin-driven) height afterward — without
+   ScrollTrigger knowing the boundary had moved. That mismatch is exactly
+   what produced the oversized gap and the overlap with the section below:
+   the pin was measured against a fake stand-in size, not against reality. */
+#about,#services,#academy,#reviews,#pricing,#process,#faq,#contact{
   content-visibility:auto;
   contain-intrinsic-size:1px 1400px;
 }
