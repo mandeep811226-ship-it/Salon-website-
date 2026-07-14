@@ -2,6 +2,7 @@
 <html lang="en" class="is-preloading">
 <head>
 <meta charset="UTF-8">
+<script>try{if(localStorage.getItem('theme')==='light'){document.documentElement.classList.add('light');}}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manisha Tushar Salon &amp; Academy — Kota</title>
 <meta name="description" content="Manisha Tushar Salon &amp; Academy — unisex hair, bridal, nail and skin artistry in Dadabari, Kota. 4.7★ across 347 reviews. Training and hiring through our in-house academy.">
@@ -1844,9 +1845,11 @@ mobileNav.querySelectorAll('a').forEach(a=>a.addEventListener('click', ()=>{ mob
 
 /* ---------- Theme toggle ---------- */
 const themeToggle = document.getElementById('themeToggle');
+themeToggle.setAttribute('aria-pressed', String(document.documentElement.classList.contains('light')));
 themeToggle.addEventListener('click', ()=>{
   const isLight = document.documentElement.classList.toggle('light');
   themeToggle.setAttribute('aria-pressed', String(isLight));
+  try{ localStorage.setItem('theme', isLight ? 'light' : 'dark'); }catch(e){}
 });
 
 /* ---------- Magnetic buttons ---------- */
