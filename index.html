@@ -502,16 +502,21 @@ html.light .test-carousel__dots button.active{background:var(--gold-ink);}
 /* ===== Team ===== */
 .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;perspective:1400px;}
 @media(max-width:1000px){.team-grid{grid-template-columns:1fr 1fr;}}
-@media(max-width:560px){.team-grid{grid-template-columns:1fr;}}
+@media(max-width:560px){.team-grid{grid-template-columns:1fr 1fr;gap:16px;}}
 .team-card{position:relative;border:1px solid var(--line);padding-top:120%;overflow:hidden;background:linear-gradient(160deg,var(--maroon-800),var(--maroon-950));}
+@media(max-width:560px){.team-card{padding-top:130%;}}
 html.light .team-card{background:linear-gradient(160deg,#f4e3c4,#f7efe4);}
 .team-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.2) brightness(.92);transition:transform .6s var(--ease-out), filter .5s var(--ease-out);transform:scale(1.03);}
 .team-card:hover img{transform:scale(1.1);filter:grayscale(0) brightness(.8);}
 .team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.05) 30%, rgba(21,5,7,.88) 100%);z-index:1;}
 .team-card .info{position:absolute;left:0;right:0;bottom:0;padding:26px;transition:transform .5s var(--ease-out);}
+@media(max-width:560px){.team-card .info{padding:18px;}}
 .team-card h3{font-size:22px;font-weight:600;color:var(--gold-300);}
+@media(max-width:560px){.team-card h3{font-size:20px;}}
 .team-card span{font-family:var(--mono);font-size:10.5px;color:var(--gold-300);letter-spacing:.12em;display:block;margin:8px 0 12px;}
+@media(max-width:560px){.team-card span{font-size:10.5px;margin:7px 0 9px;}}
 .team-card p{font-size:13px;color:var(--ivory-50);line-height:1.6;transition:opacity .4s var(--ease-out) .1s;}
+@media(max-width:560px){.team-card p{font-size:13px;line-height:1.55;}}
 /* Only hide-until-hover on devices that truly support hover (mouse/trackpad).
    On touch devices, names + roles stay visible at all times. */
 @media(hover:hover) and (pointer:fine){
@@ -1871,12 +1876,20 @@ document.querySelectorAll('.look-card').forEach(card=>{
    curtain: every animation is created, and can only be seen, after the
    preloader has fully finished. */
 function initScrollAnimations(){
+  const revealGroupCounts = new Map();
   gsap.utils.toArray('.reveal').forEach(el=>{
     if (el.matches('.flip-card, .price-card, .process-card')) return;
+    // Group by parent container so text blocks that sit together (e.g. a
+    // heading + paragraphs, or a run of paragraphs) land one after another
+    // instead of all fading in at once. Elements in different sections keep
+    // independent counters, so the stagger never drifts across the page.
+    const group = el.parentElement;
+    const idx = revealGroupCounts.get(group) || 0;
+    revealGroupCounts.set(group, idx + 1);
     gsap.fromTo(el,
       {opacity:0, y:44},
       {
-        opacity:1, y:0, duration:1.6, ease:'power2.out',
+        opacity:1, y:0, duration:1, ease:'power2.out', delay:idx*0.14,
         scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'restart none none reverse'}
       }
     );
