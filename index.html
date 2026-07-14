@@ -289,6 +289,14 @@ html.light .hero{background:var(--maroon-950);}
 .hero h1{font-size:clamp(38px,6vw,78px);color:var(--ivory-50);}
 .hero h1 .line{overflow:hidden;display:block;}
 .hero h1 .line span{display:inline-block;transform:translateY(105%);}
+
+/* Section headings: same masked-reveal mechanism as the hero title above,
+   applied via JS (see the h2-mask script) so the existing markup for every
+   heading — including inline elements like .stroke — never has to be
+   hand-edited across 2,000+ lines. */
+h2.h2-mask{overflow:hidden;}
+.h2-mask-inner{display:inline-block;}
+body.no-gsap-fallback .h2-mask-inner{transform:none !important;}
 .hero-sub{max-width:430px;margin-top:26px;font-size:16px;line-height:1.7;color:rgba(247,239,228,.78);opacity:0;}
 .hero-ctas{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap;opacity:0;}
 .hero-scroll{position:absolute;bottom:60px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--gold-300);z-index:3;}
@@ -396,11 +404,19 @@ section{position:relative;z-index:2;padding:140px 0;}
 
 /* ===== Gallery (lookbook) ===== */
 .gallery-pin{overflow:visible;}
+.gallery-viewport{overflow:hidden;}
 .gallery-track{
   display:flex;gap:26px;width:100%;padding:0 32px 20px;
   overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
   cursor:grab;scrollbar-width:none;
 }
+/* Once GSAP takes over (added via JS, see gallery pin script below), the
+   track is no longer a native overflow-x scroller — it's a plain flex row
+   sized to its full content width and shifted with a single transform:
+   translateX driven by the pinned ScrollTrigger. Without this class (JS/GSAP
+   unavailable, or prefers-reduced-motion) the original native drag-scroll
+   above still works untouched, so the gallery is never broken. */
+.gallery-track.gsap-pin{overflow:visible;width:max-content;padding:0 6vw 20px;cursor:default;scroll-snap-type:none;}
 .gallery-track.dragging{cursor:grabbing;scroll-snap-type:none;user-select:none;}
 .gallery-track::-webkit-scrollbar{display:none;}
 .look-card{scroll-snap-align:start;}
@@ -492,13 +508,13 @@ html.light .test-carousel__dots button.active{background:var(--gold-ink);}
 @media(max-width:560px){.team-grid{grid-template-columns:1fr;}}
 .team-card{position:relative;border:1px solid var(--line);padding-top:120%;overflow:hidden;background:linear-gradient(160deg,var(--maroon-800),var(--maroon-950));}
 html.light .team-card{background:linear-gradient(160deg,#f4e3c4,#f7efe4);}
-.team-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.3) brightness(.7);transition:transform .6s var(--ease-out), filter .5s var(--ease-out);transform:scale(1.03);}
-.team-card:hover img{transform:scale(1.1);filter:grayscale(0) brightness(.55);}
-.team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.05) 30%, rgba(21,5,7,.95) 100%);z-index:1;}
+.team-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.2) brightness(.92);transition:transform .6s var(--ease-out), filter .5s var(--ease-out);transform:scale(1.03);}
+.team-card:hover img{transform:scale(1.1);filter:grayscale(0) brightness(.8);}
+.team-card::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(21,5,7,.05) 30%, rgba(21,5,7,.88) 100%);z-index:1;}
 .team-card .info{position:absolute;left:0;right:0;bottom:0;padding:26px;transition:transform .5s var(--ease-out);}
 .team-card h3{font-size:22px;font-weight:600;color:var(--gold-300);}
 .team-card span{font-family:var(--mono);font-size:10.5px;color:var(--gold-300);letter-spacing:.12em;display:block;margin:8px 0 12px;}
-.team-card p{font-size:13px;color:var(--fg-dim);line-height:1.6;transition:opacity .4s var(--ease-out) .1s;}
+.team-card p{font-size:13px;color:var(--ivory-50);line-height:1.6;transition:opacity .4s var(--ease-out) .1s;}
 /* Only hide-until-hover on devices that truly support hover (mouse/trackpad).
    On touch devices, names + roles stay visible at all times. */
 @media(hover:hover) and (pointer:fine){
@@ -1125,14 +1141,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       <div class="section-head">
         <div class="eyebrow reveal">Lookbook</div>
         <h2 class="reveal">A studio, not a stock photo.</h2>
-        <p class="reveal">Drag or scroll to move through our four signature ateliers.</p>
+        <p class="reveal">Scroll to glide through our four signature ateliers.</p>
       </div>
     </div>
+    <div class="gallery-viewport">
     <div class="gallery-track" id="galleryTrack">
       <div class="look-card look-1"><div class="bg"><img src="images/bridal_glam.jpg" alt="Bridal Glam look with gold jewellery" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 01</small><h3>Bridal Glam</h3><p>HD and airbrush bridal looks built around each face, not a template.</p></div></div>
       <div class="look-card look-2"><div class="bg"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop" alt="Hair colour and styling tools" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 02</small><h3>Colour Studio</h3><p>Balayage and highlight work designed for depth and shine, not just shade.</p></div></div>
       <div class="look-card look-3"><div class="bg"><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=1200&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 03</small><h3>Nail Design</h3><p>Extensions, art and precision finishing for every hand that walks in.</p></div></div>
       <div class="look-card look-4"><div class="bg"><img src="https://images.unsplash.com/photo-1637777269308-6a072f24e8a4?q=80&w=1200&auto=format&fit=crop" alt="Academy training floor with styling chairs" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 04</small><h3>Academy Floor</h3><p>Where trainees practice live technique under working stylists.</p></div></div>
+    </div>
     </div>
   </section>
 
@@ -1628,6 +1646,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 document.addEventListener('DOMContentLoaded', function(){
 gsap.registerPlugin(ScrollTrigger);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let galleryHorizontalTween = null; // set by the gallery pin script below; read by the look-card reveal block
 
 /* ---------- Lenis: global silky smooth-scroll ----------
    Lenis intercepts wheel/touch input and eases the scroll position with its
@@ -1671,6 +1690,7 @@ window.addEventListener('load', () => {
   if (reduceMotion){
     gsap.set('#loader', {display:'none'});
     playHero();
+    initTextReveals();
     return;
   }
 
@@ -1693,7 +1713,8 @@ window.addEventListener('load', () => {
     .to('#curtainL', {scaleX:0, duration:.9, ease:'power4.inOut'}, '-=.05')
     .to('#curtainR', {scaleX:0, duration:.9, ease:'power4.inOut'}, '<')
     .set('#loader', {display:'none'})
-    .add(playHero, '-=.5');
+    .add(playHero, '-=.5')
+    .add(initTextReveals, '-=.3');
 
   // Safety net: if anything above ever throws or a browser blocks a CDN script,
   // never leave the curtain stuck covering the whole site.
@@ -1702,6 +1723,7 @@ window.addEventListener('load', () => {
     if (loaderEl && getComputedStyle(loaderEl).display !== 'none'){
       loaderEl.style.display = 'none';
       if (typeof playHero === 'function') playHero();
+      if (typeof initTextReveals === 'function') initTextReveals();
     }
   }, 4500);
 });
@@ -1798,17 +1820,53 @@ document.querySelectorAll('.magnetic').forEach(btn=>{
    the element is scrolled down into view, and play back out every time it's
    scrolled back up past its start point — so it's never a one-shot. Cards
    that get a dedicated signature animation (flip/price/process/team/look)
-   are skipped here since they're handled in their own blocks below. */
-gsap.utils.toArray('.reveal').forEach(el=>{
-  if (el.matches('.flip-card, .price-card, .process-card')) return;
-  gsap.fromTo(el,
-    {opacity:0, y:32},
-    {
-      opacity:1, y:0, duration:1, ease:'power3.out',
-      scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'restart none none reverse'}
-    }
-  );
-});
+   are skipped here since they're handled in their own blocks below.
+
+   IMPORTANT: this is wrapped in a function and called from the loader's
+   timeline (see initTextReveals() call near playHero, below) rather than
+   run immediately. If it ran immediately, any heading/paragraph already
+   sitting within the initial viewport would have its ScrollTrigger fire
+   and complete its animation while still hidden behind the preloader
+   curtain — so by the time the curtain opened, the text would already be
+   sitting at rest with no visible motion at all. Deferring registration
+   until right after the curtain opens guarantees every text reveal is
+   actually seen, at a clear, medium (not rushed) pace. */
+function initTextReveals(){
+  gsap.utils.toArray('.reveal').forEach(el=>{
+    if (el.matches('.flip-card, .price-card, .process-card')) return;
+    gsap.fromTo(el,
+      {opacity:0, y:32},
+      {
+        opacity:1, y:0, duration:1.15, ease:'power3.out',
+        scrollTrigger:{trigger:el, start:'top 88%', toggleActions:'restart none none reverse'}
+      }
+    );
+  });
+
+  /* ---------- Section headings: hero-style masked reveal ----------
+     Every big section heading gets the same reveal language as the hero
+     title — the text sits behind a hard mask edge and lifts up into view,
+     at a deliberate mid-speed pace — layered on top of the fade/rise it
+     already gets above. The hero h1 keeps its own bespoke per-line
+     version; headings that carry the underline brushstroke SVG are
+     skipped so the mask can't clip it. */
+  if (!reduceMotion){
+    document.querySelectorAll('h2.reveal').forEach(h2=>{
+      if (h2.closest('.hero') || h2.querySelector('.stroke') || h2.classList.contains('h2-mask')) return;
+      const inner = document.createElement('span');
+      inner.className = 'h2-mask-inner';
+      while (h2.firstChild) inner.appendChild(h2.firstChild);
+      h2.appendChild(inner);
+      h2.classList.add('h2-mask');
+      gsap.fromTo(inner, {y:'105%'}, {
+        y:'0%', duration:1.2, ease:'power4.out',
+        scrollTrigger:{trigger:h2, start:'top 88%', toggleActions:'restart none none reverse'}
+      });
+    });
+  }
+
+  if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+}
 
 /* ---------- Brushstroke draw ---------- */
 document.querySelectorAll('.stroke path').forEach(p=>{
@@ -1880,9 +1938,15 @@ gsap.utils.toArray('.flip-card').forEach((card, i)=>{
   );
   const img = card.querySelector('.flip-front img');
   if (img){
+    // Services get their own signature curtain too: an expanding circle,
+    // opening from the card's center — distinct from the lookbook's
+    // bottom-to-top wipe and the team's center-to-both-sides split.
     gsap.fromTo(img,
-      {filter:'brightness(.3) blur(4px)'},
-      {filter:'brightness(.92) blur(0px)', duration:1.2, ease:'power3.out', delay:(i%4)*0.1+.1, scrollTrigger:st}
+      {filter:'brightness(.3) blur(4px)', clipPath:'circle(0% at 50% 50%)'},
+      {
+        filter:'brightness(.92) blur(0px)', clipPath:'circle(100% at 50% 50%)',
+        duration:1.3, ease:'power3.inOut', delay:(i%4)*0.1+.1, scrollTrigger:st
+      }
     );
   }
 });
@@ -1918,42 +1982,84 @@ document.querySelectorAll('.flip-card').forEach(card=>{
   });
 })();
 
-/* ---------- Horizontal gallery: native gesture scroll + mouse drag ---------- */
+/* ---------- Horizontal gallery: pinned cinematic showcase ----------
+   The section is pinned in place while normal vertical scroll input
+   (wheel, trackpad, touch swipe — all already eased by Lenis above) is
+   translated 1:1 into a horizontal shift of the track, the classic
+   Awwwards "portfolio strip" move. Skipped when the visitor prefers
+   reduced motion — the original simple native drag/scroll strip (no
+   pinning, no forced vertical hijack) is used instead so the gallery is
+   always usable even without this effect. */
 (function(){
+  const section = document.getElementById('gallery');
+  const viewport = document.querySelector('.gallery-viewport');
   const track = document.getElementById('galleryTrack');
-  if(!track) return;
-  let isDown=false, startX=0, startScroll=0, moved=false;
-  track.addEventListener('mousedown', e=>{
-    isDown=true; moved=false; track.classList.add('dragging');
-    startX=e.pageX; startScroll=track.scrollLeft;
+  if(!section || !track || !viewport) return;
+
+  if (reduceMotion || typeof ScrollTrigger === 'undefined'){
+    let isDown=false, startX=0, startScroll=0, moved=false;
+    track.addEventListener('mousedown', e=>{
+      isDown=true; moved=false; track.classList.add('dragging');
+      startX=e.pageX; startScroll=track.scrollLeft;
+    });
+    window.addEventListener('mouseup', ()=>{ isDown=false; track.classList.remove('dragging'); });
+    window.addEventListener('mousemove', e=>{
+      if(!isDown) return;
+      const dx = e.pageX - startX;
+      if(Math.abs(dx) > 4) moved = true;
+      track.scrollLeft = startScroll - dx;
+      e.preventDefault();
+    });
+    track.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
+    return;
+  }
+
+  track.classList.add('gsap-pin');
+
+  function build(){
+    if (galleryHorizontalTween){
+      galleryHorizontalTween.scrollTrigger.kill();
+      galleryHorizontalTween.kill();
+    }
+    const distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+    galleryHorizontalTween = gsap.to(track, {
+      x: -distance, ease:'none',
+      scrollTrigger:{
+        trigger: section, start:'top top', end:'+='+distance,
+        pin:true, scrub:0.5, invalidateOnRefresh:true, anticipatePin:1
+      }
+    });
+  }
+  build();
+
+  let resizeT;
+  window.addEventListener('resize', ()=>{
+    clearTimeout(resizeT);
+    resizeT = setTimeout(()=> ScrollTrigger.refresh(), 200);
   });
-  window.addEventListener('mouseup', ()=>{ isDown=false; track.classList.remove('dragging'); });
-  window.addEventListener('mousemove', e=>{
-    if(!isDown) return;
-    const dx = e.pageX - startX;
-    if(Math.abs(dx) > 4) moved = true;
-    track.scrollLeft = startScroll - dx;
-    e.preventDefault();
-  });
-  track.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
-  // touch and trackpad horizontal swipe work natively via overflow-x:auto
 })();
 
 /* ---------- Lookbook: immersive reveal + parallax storytelling ----------
-   Cards alternate entering from left/right (horizontal) while rising
-   slightly (vertical), staggered — repeatable both directions. The photo
-   inside each card ALSO drifts vertically at a different speed than the
-   card as the page scrolls (a continuous scrub tied 1:1 to scroll
-   position) for a true parallax storytelling feel, forward AND backward. */
+   Each card's entrance and curtain-reveal are tied to `containerAnimation:
+   galleryHorizontalTween` (when the pin above is active) — meaning they
+   trigger based on the card's own position as it scrolls across the
+   screen horizontally, not on the section's single vertical entry point.
+   That's what fixes the reveal being invisible on mobile: previously all
+   four cards revealed together the instant the section appeared, long
+   before a mobile visitor had scrolled across to see cards 2–4. Slowed
+   down (1.6s, eased in/out) so the curtain is clearly visible rather than
+   flashing past. Falls back to the plain vertical-entry trigger when the
+   pin isn't active (reduced motion / no ScrollTrigger). */
 gsap.utils.toArray('.look-card').forEach((card, i)=>{
   const fromSide = i % 2 === 0 ? -70 : 70;
   const bgLayer = card.querySelector('.bg');
+  const stCard = galleryHorizontalTween
+    ? {trigger:card, containerAnimation:galleryHorizontalTween, start:'left 92%', end:'left 40%', toggleActions:'restart none none reverse'}
+    : {trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'};
+
   gsap.fromTo(card,
     {opacity:0, x:fromSide, y:40, scale:.88},
-    {
-      opacity:1, x:0, y:0, scale:1, duration:1, ease:'power3.out', delay:(i%4)*0.08,
-      scrollTrigger:{trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'}
-    }
+    {opacity:1, x:0, y:0, scale:1, duration:1.2, ease:'power3.out', scrollTrigger:stCard}
   );
   // Awwwards-style unveil: the photo layer itself expands into view from a
   // closed bottom-to-top mask, independent of the card's own fade/slide-in
@@ -1961,19 +2067,27 @@ gsap.utils.toArray('.look-card').forEach((card, i)=>{
   if (bgLayer && !reduceMotion){
     gsap.fromTo(bgLayer,
       {clipPath:'inset(100% 0% 0% 0%)'},
-      {
-        clipPath:'inset(0% 0% 0% 0%)', duration:1.1, ease:'power4.inOut', delay:(i%4)*0.08+.05,
-        scrollTrigger:{trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'}
-      }
+      {clipPath:'inset(0% 0% 0% 0%)', duration:1.6, ease:'power4.inOut', scrollTrigger:stCard}
     );
   }
   const img = card.querySelector('.bg img');
   if (img && !reduceMotion){
-    gsap.set(img, {yPercent:0});
-    gsap.to(img, {
-      yPercent:-10, ease:'none',
-      scrollTrigger:{trigger:'#gallery', start:'top bottom', end:'bottom top', scrub:0.6}
-    });
+    if (galleryHorizontalTween){
+      // While pinned, vertical scroll is frozen, so the depth-parallax
+      // drifts the photo horizontally against the card's own horizontal
+      // travel instead — same layered-depth illusion, adapted to the axis
+      // that's actually moving during this section.
+      gsap.fromTo(img, {xPercent:-6}, {
+        xPercent:6, ease:'none',
+        scrollTrigger:{trigger:card, containerAnimation:galleryHorizontalTween, start:'left right', end:'left left', scrub:true}
+      });
+    } else {
+      gsap.set(img, {yPercent:0});
+      gsap.to(img, {
+        yPercent:-10, ease:'none',
+        scrollTrigger:{trigger:'#gallery', start:'top bottom', end:'bottom top', scrub:0.6}
+      });
+    }
   }
 });
 
@@ -2011,11 +2125,18 @@ document.querySelectorAll('.look-card').forEach(card=>{
     );
     // Immersive zoom: the photo pulls into focus from a soft, dim blur as the
     // card lands — independent of the CSS hover-zoom, which still works after.
+    // The clip-path adds a second, distinct curtain: the image unveils from
+    // a thin center seam outward to both edges (rather than the lookbook's
+    // bottom-to-top curtain), so each signature reveal on the site reads as
+    // its own move instead of a repeated template.
     const img = card.querySelector('img');
     if (img){
       gsap.fromTo(img,
-        {filter:'grayscale(.3) brightness(.4) blur(5px)'},
-        {filter:'grayscale(.3) brightness(.7) blur(0px)', duration:1.3, ease:'power3.out', delay:i*0.08+.1, scrollTrigger:st}
+        {filter:'grayscale(.2) brightness(.55) blur(5px)', clipPath:'inset(0% 50% 0% 50%)'},
+        {
+          filter:'grayscale(.2) brightness(.92) blur(0px)', clipPath:'inset(0% 0% 0% 0%)',
+          duration:1.4, ease:'power4.inOut', delay:i*0.08+.1, scrollTrigger:st
+        }
       );
     }
   });
