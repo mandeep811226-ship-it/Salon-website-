@@ -496,7 +496,7 @@ html.light .test-carousel__dots button.active{background:var(--gold-ink);}
 .stars svg{width:14px;height:14px;fill:var(--gold-400);}
 .test-card p{font-size:15px;line-height:1.75;color:var(--fg);}
 .test-card footer{margin-top:22px;display:flex;align-items:center;gap:12px;}
-.test-card .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold-400),var(--maroon-700));}
+.test-card .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold-400),var(--maroon-700));display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--maroon-950);letter-spacing:.02em;flex-shrink:0;}
 .test-card .who b{display:block;font-size:13px;}
 .test-card .who span{font-family:var(--mono);font-size:10.5px;color:var(--fg-dim);}
 
@@ -1041,14 +1041,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       <div class="section-head">
         <div class="eyebrow reveal">What We Do</div>
         <h2 class="reveal">Four disciplines. <span class="stroke">One standard<svg viewBox="0 0 200 20" aria-hidden="true"><path d="M2 12 C 40 4, 90 18, 198 8"/></svg></span>.</h2>
-        <p class="reveal">Tap a discipline below, then tap the card to see what's inside. Every service is performed by a specialist, not a generalist.</p>
-      </div>
-
-      <div class="svc-rail" id="svcRail">
-        <button class="active" data-cat="hair" style="--c:var(--maroon-700)"><span class="dot" style="background:var(--maroon-700)"></span>Hair</button>
-        <button data-cat="skin" style="--c:var(--gold-400)"><span class="dot" style="background:var(--gold-400)"></span>Skin</button>
-        <button data-cat="makeup" style="--c:var(--gold-300)"><span class="dot" style="background:var(--gold-300)"></span>Makeup</button>
-        <button data-cat="nails" style="--c:var(--rose-300)"><span class="dot" style="background:var(--rose-300)"></span>Nails</button>
+        <p class="reveal">Tap a card to see what's inside. Every service is performed by a specialist, not a generalist.</p>
       </div>
 
       <div class="svc-grid" id="svcGrid">
@@ -1189,17 +1182,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
       (function(){
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const reviews = [
-          ['Consistently warm and clean — and the staff always ask before starting a treatment, even a simple massage.', 'Regular Client', '2+ Years'],
-          ['Fair pricing for the quality of work — every consultation feels attentive, never rushed, even for bridal bookings.', 'Bridal Client', 'Hair & Makeup'],
-          ['The kind of place you can just sit and feel comfortable in — no rush, and no pressure to add on extra services.', 'Longtime Client', '10+ Years'],
-          ['Booked a last-minute bridal trial and they still took the time to get it exactly right before the wedding.', 'Wedding Client', 'Bridal Package'],
-          ['My colour has never held this well — they actually listen before picking a shade instead of pushing one.', 'Colour Client', '3+ Years'],
-          ['Clean, professional, and the academy trainees are supervised closely — never felt like a guinea pig.', 'Academy Client', 'Hair & Spa']
+          ['This place feels like a hidden gem — sharp haircuts, standout nail art, and a genuinely warm, relaxing team.', 'Tanishq Vijay', 'Haircut & Nail Art'],
+          ['Booked hair colour, a facial, and nails all for one event — every single detail came out exactly right.', 'Monica Sharma', 'Hair Colour & Facial'],
+          ['Susant\'s skin consultation was thoughtful and unhurried, in a spotless, welcoming salon from the moment I walked in.', 'Khushveer Sahni', 'Skin Treatment'],
+          ['Tushar\'s nail work is detail-obsessed — my nails have never looked better, and it shows.', 'Vikas Verma', 'Nail Art'],
+          ['A genuinely relaxing, rejuvenating facial in a calm space, with staff that made me feel right at home.', 'Arjun Kumar', 'Facial'],
+          ['Sushant\'s massage technique — right pressure, full attention throughout — left me completely rejuvenated by the end.', 'Sanjay Gupta', 'Massage'],
+          ['The behaviour of the whole team was warm, and Tushar\'s haircut work is precise down to the finish.', 'Himanshi S.', 'Haircut']
         ];
-        function reviewCard(r){
-          return '<div class="test-card"><div class="stars">★★★★★</div><p>'+r[0]+'</p><footer><div class="avatar"></div><div class="who"><b>'+r[1]+'</b><span>'+r[2]+'</span></div></footer></div>';
+        function initials(name){
+          return name.replace('Verified Client','VC').split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
         }
-        const cols = [[reviews[0],reviews[3]],[reviews[1],reviews[4]],[reviews[2],reviews[5]]];
+        function reviewCard(r){
+          return '<div class="test-card"><div class="stars">★★★★★</div><p>'+r[0]+'</p><footer><div class="avatar">'+initials(r[1])+'</div><div class="who"><b>'+r[1]+'</b><span>'+r[2]+'</span></div></footer></div>';
+        }
+        const cols = [[], [], []];
+        reviews.forEach(function(r, i){ cols[i % 3].push(r); });
         ['testTrackA','testTrackB','testTrackC'].forEach(function(id, idx){
           const el = document.getElementById(id);
           if(!el) return;
@@ -1888,32 +1886,6 @@ document.querySelectorAll('.flip-card').forEach(card=>{
 document.querySelectorAll('.team-card').forEach(card=>{
   card.addEventListener('click', ()=> card.classList.toggle('flipped'));
 });
-(function(){
-  const rail = document.getElementById('svcRail');
-  if(!rail) return;
-  rail.querySelectorAll('button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      rail.querySelectorAll('button').forEach(b=>{
-        b.classList.remove('active');
-        b.style.background='transparent';
-        b.style.color='var(--fg)';
-      });
-      btn.classList.add('active');
-      const c = btn.style.getPropertyValue('--c');
-      btn.style.background = c;
-      btn.style.color = 'var(--maroon-950)';
-      document.querySelectorAll('.flip-card').forEach(card=>{
-        if(card.dataset.cat === btn.dataset.cat){
-          card.style.opacity = '1';
-          card.style.transform = 'scale(1)';
-        } else {
-          card.style.opacity = '0.4';
-          card.style.transform = 'scale(0.97)';
-        }
-      });
-    });
-  });
-})();
 
 /* ---------- Look card tilt (hover-only, no scroll trigger) ---------- */
 document.querySelectorAll('.look-card').forEach(card=>{
