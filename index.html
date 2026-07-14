@@ -414,28 +414,14 @@ section{position:relative;z-index:2;padding:140px 0;}
 @media(max-width:560px){.flip-card{height:340px;}}
 
 /* ===== Gallery (lookbook) ===== */
-.gallery-pin{overflow:visible;}
-.gallery-viewport{overflow:hidden;}
-.gallery-track{
-  display:flex;gap:26px;width:100%;padding:0 32px 20px;
-  overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;
-  cursor:grab;scrollbar-width:none;
-}
-/* Once GSAP takes over (added via JS, see gallery pin script below), the
-   track is no longer a native overflow-x scroller — it's a plain flex row
-   sized to its full content width and shifted with a single transform:
-   translateX driven by the pinned ScrollTrigger. Without this class (JS/GSAP
-   unavailable, or prefers-reduced-motion) the original native drag-scroll
-   above still works untouched, so the gallery is never broken. */
-.gallery-track.gsap-pin{overflow:visible;width:max-content;padding:0 6vw 20px;cursor:default;scroll-snap-type:none;}
-.gallery-track.dragging{cursor:grabbing;scroll-snap-type:none;user-select:none;}
-.gallery-track::-webkit-scrollbar{display:none;}
-.look-card{scroll-snap-align:start;}
+.look-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:50px;}
+@media(max-width:800px){.look-grid{grid-template-columns:1fr;}}
 .look-card{
-  width:min(72vw,420px);height:520px;flex-shrink:0;position:relative;
+  width:100%;height:460px;position:relative;
   border:1px solid var(--line);overflow:hidden;
   display:flex;flex-direction:column;justify-content:flex-end;padding:30px;
 }
+@media(max-width:560px){.look-card{height:400px;padding:24px;}}
 .look-card .bg{position:absolute;inset:0;z-index:0;}
 .look-card .content{position:relative;z-index:2;}
 .look-card small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.75);}
@@ -852,23 +838,8 @@ img[loading="lazy"].img-loaded{opacity:1;}
 
 /* Render offscreen sections cheaply until they're near the viewport.
    Keeps initial layout/paint cost down on long single-page sites.
-   contain-intrinsic-size prevents scrollbar/CLS jumps on first estimate.
-   #gallery is deliberately excluded: it's a pinned ScrollTrigger section
-   whose real height depends on a horizontal-scroll distance calculated in
-   JS from its actual laid-out width. content-visibility:auto would size
-   it using the 1400px placeholder below until it scrolled near, then
-   swap in its true (much taller, pin-driven) height afterward — without
-   ScrollTrigger knowing the boundary had moved. That mismatch is exactly
-   what produced the oversized gap and the overlap with the section below:
-   the pin was measured against a fake stand-in size, not against reality.
-   #services is ALSO excluded now, one level removed: it sits immediately
-   before the pinned #gallery, so if #services was still showing its
-   1400px placeholder height (not yet "warmed up" because it hadn't
-   scrolled near on first load) at the moment ScrollTrigger measured
-   #gallery's "top top" position, the whole pin would be measured from
-   the wrong Y coordinate — the same gap/overlap bug, just one section
-   upstream of where it's visible. */
-#about,#academy,#reviews,#pricing,#process,#faq,#contact{
+   contain-intrinsic-size prevents scrollbar/CLS jumps on first estimate. */
+#about,#services,#gallery,#academy,#reviews,#pricing,#process,#faq,#contact{
   content-visibility:auto;
   contain-intrinsic-size:1px 1400px;
 }
@@ -1163,21 +1134,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   </section>
 
   <!-- GALLERY / LOOKBOOK -->
-  <section id="gallery" class="gallery-pin">
+  <section id="gallery">
     <div class="wrap">
       <div class="section-head">
         <div class="eyebrow reveal">Lookbook</div>
         <h2 class="reveal">A studio, not a stock photo.</h2>
-        <p class="reveal">Scroll to glide through our four signature ateliers.</p>
+        <p class="reveal">Four signature ateliers, one studio.</p>
       </div>
-    </div>
-    <div class="gallery-viewport">
-    <div class="gallery-track" id="galleryTrack">
-      <div class="look-card look-1"><div class="bg"><img src="images/bridal_glam.jpg" alt="Bridal Glam look with gold jewellery" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 01</small><h3>Bridal Glam</h3><p>HD and airbrush bridal looks built around each face, not a template.</p></div></div>
-      <div class="look-card look-2"><div class="bg"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop" alt="Hair colour and styling tools" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 02</small><h3>Colour Studio</h3><p>Balayage and highlight work designed for depth and shine, not just shade.</p></div></div>
-      <div class="look-card look-3"><div class="bg"><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=1200&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 03</small><h3>Nail Design</h3><p>Extensions, art and precision finishing for every hand that walks in.</p></div></div>
-      <div class="look-card look-4"><div class="bg"><img src="https://images.unsplash.com/photo-1637777269308-6a072f24e8a4?q=80&w=1200&auto=format&fit=crop" alt="Academy training floor with styling chairs" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 04</small><h3>Academy Floor</h3><p>Where trainees practice live technique under working stylists.</p></div></div>
-    </div>
+      <div class="look-grid">
+        <div class="look-card look-1"><div class="bg"><img src="images/bridal_glam.jpg" alt="Bridal Glam look with gold jewellery" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 01</small><h3>Bridal Glam</h3><p>HD and airbrush bridal looks built around each face, not a template.</p></div></div>
+        <div class="look-card look-2"><div class="bg"><img src="https://images.unsplash.com/photo-1595475884562-073c30d45670?q=80&w=1200&auto=format&fit=crop" alt="Hair colour and styling tools" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 02</small><h3>Colour Studio</h3><p>Balayage and highlight work designed for depth and shine, not just shade.</p></div></div>
+        <div class="look-card look-3"><div class="bg"><img src="https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?q=80&w=1200&auto=format&fit=crop" alt="Detailed nail art design" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 03</small><h3>Nail Design</h3><p>Extensions, art and precision finishing for every hand that walks in.</p></div></div>
+        <div class="look-card look-4"><div class="bg"><img src="https://images.unsplash.com/photo-1637777269308-6a072f24e8a4?q=80&w=1200&auto=format&fit=crop" alt="Academy training floor with styling chairs" loading="lazy" decoding="async"></div><div class="content"><small>ATELIER 04</small><h3>Academy Floor</h3><p>Where trainees practice live technique under working stylists.</p></div></div>
+      </div>
     </div>
   </section>
 
@@ -1673,7 +1642,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 document.addEventListener('DOMContentLoaded', function(){
 gsap.registerPlugin(ScrollTrigger);
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-let galleryHorizontalTween = null; // set by the gallery pin script below; read by the look-card reveal block
 
 /* ---------- Lenis: global silky smooth-scroll ----------
    Lenis intercepts wheel/touch input and eases the scroll position with its
@@ -2012,108 +1980,38 @@ function initScrollAnimations(){
     }
   });
 
-  /* ---------- Horizontal gallery: pinned cinematic showcase ----------
-     The section is pinned in place while normal vertical scroll input
-     is translated 1:1 into a horizontal shift of the track. Skipped
-     entirely when the visitor prefers reduced motion — the original
-     native drag/scroll strip is used instead. Building this only after
-     the preloader finishes (rather than at DOMContentLoaded) means the
-     distance is measured against the page's real, final layout instead
-     of whatever partially-settled state existed a moment after parse. */
-  (function(){
-    const section = document.getElementById('gallery');
-    const viewport = document.querySelector('.gallery-viewport');
-    const track = document.getElementById('galleryTrack');
-    if(!section || !track || !viewport) return;
-
-    if (reduceMotion || typeof ScrollTrigger === 'undefined'){
-      let isDown=false, startX=0, startScroll=0, moved=false;
-      track.addEventListener('mousedown', e=>{
-        isDown=true; moved=false; track.classList.add('dragging');
-        startX=e.pageX; startScroll=track.scrollLeft;
-      });
-      window.addEventListener('mouseup', ()=>{ isDown=false; track.classList.remove('dragging'); });
-      window.addEventListener('mousemove', e=>{
-        if(!isDown) return;
-        const dx = e.pageX - startX;
-        if(Math.abs(dx) > 4) moved = true;
-        track.scrollLeft = startScroll - dx;
-        e.preventDefault();
-      });
-      track.addEventListener('click', e=>{ if(moved){ e.preventDefault(); e.stopPropagation(); } }, true);
-      return;
-    }
-
-    track.classList.add('gsap-pin');
-
-    function build(){
-      if (galleryHorizontalTween){
-        galleryHorizontalTween.scrollTrigger.kill();
-        galleryHorizontalTween.kill();
-      }
-      const distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
-      galleryHorizontalTween = gsap.to(track, {
-        x: -distance, ease:'none',
-        scrollTrigger:{
-          trigger: section, start:'top top', end:'+='+distance,
-          pin:true, scrub:0.5, invalidateOnRefresh:true, anticipatePin:1
-        }
-      });
-    }
-    build();
-
-    // Rebuild (not just refresh) on resize: a plain ScrollTrigger.refresh()
-    // re-measures the trigger's start/end positions but keeps the OLD
-    // "distance" the tween was built with. On an orientation change or a
-    // real viewport-width change the true horizontal distance changes too,
-    // so refresh() alone leaves the pin scrubbing against a stale number —
-    // which is exactly what produces a leftover gap or an overlap once the
-    // pin ends. Calling build() again recomputes distance from scratch.
-    let resizeT;
-    window.addEventListener('resize', ()=>{
-      clearTimeout(resizeT);
-      resizeT = setTimeout(build, 200);
-    });
-  })();
-
-  /* ---------- Lookbook: immersive reveal + parallax storytelling ----------
-     Each card's entrance and curtain-reveal are tied to `containerAnimation:
-     galleryHorizontalTween` (when the pin above is active) — meaning they
-     trigger based on the card's own position as it scrolls across the
-     screen horizontally, not on the section's single vertical entry point.
-     Falls back to the plain vertical-entry trigger when the pin isn't
-     active (reduced motion / no ScrollTrigger). */
+  /* ---------- Lookbook: one-by-one curtain reveal ----------
+     Plain grid now — no horizontal scroll-hijack, no pin, nothing that
+     could misbehave on mobile. Each card triggers off its OWN position
+     as it scrolls into view, and the two cards sharing a grid row are
+     given a deliberate stagger so they land a clear beat apart rather
+     than both landing on the exact same scroll frame — that's what
+     makes the reveal read as an animation instead of a simultaneous
+     pop-in. */
   gsap.utils.toArray('.look-card').forEach((card, i)=>{
-    const fromSide = i % 2 === 0 ? -70 : 70;
     const bgLayer = card.querySelector('.bg');
-    const stCard = galleryHorizontalTween
-      ? {trigger:card, containerAnimation:galleryHorizontalTween, start:'left 92%', end:'left 40%', toggleActions:'restart none none reverse'}
-      : {trigger:'#gallery', start:'top 75%', toggleActions:'restart none none reverse'};
+    const st = {trigger:card, start:'top 85%', toggleActions:'restart none none reverse'};
+    const stagger = (i % 2) * 0.2; // left card in a row lands, then right card a clear 0.2s later
 
     gsap.fromTo(card,
-      {opacity:0, x:fromSide, y:40, scale:.88},
-      {opacity:1, x:0, y:0, scale:1, duration:1.2, ease:'power3.out', scrollTrigger:stCard}
+      {opacity:0, y:50, scale:.92},
+      {opacity:1, y:0, scale:1, duration:1.1, ease:'power3.out', delay:stagger, scrollTrigger:st}
     );
+    // Curtain unveil on the photo layer, timed to trail slightly behind the
+    // card's own fade/rise so the two motions read as distinct beats.
     if (bgLayer && !reduceMotion){
       gsap.fromTo(bgLayer,
         {clipPath:'inset(100% 0% 0% 0%)'},
-        {clipPath:'inset(0% 0% 0% 0%)', duration:1.6, ease:'power4.inOut', scrollTrigger:stCard}
+        {clipPath:'inset(0% 0% 0% 0%)', duration:1.5, ease:'power4.inOut', delay:stagger+.12, scrollTrigger:st}
       );
     }
     const img = card.querySelector('.bg img');
     if (img && !reduceMotion){
-      if (galleryHorizontalTween){
-        gsap.fromTo(img, {xPercent:-6}, {
-          xPercent:6, ease:'none',
-          scrollTrigger:{trigger:card, containerAnimation:galleryHorizontalTween, start:'left right', end:'left left', scrub:true}
-        });
-      } else {
-        gsap.set(img, {yPercent:0});
-        gsap.to(img, {
-          yPercent:-10, ease:'none',
-          scrollTrigger:{trigger:'#gallery', start:'top bottom', end:'bottom top', scrub:0.6}
-        });
-      }
+      gsap.set(img, {yPercent:0});
+      gsap.to(img, {
+        yPercent:-10, ease:'none',
+        scrollTrigger:{trigger:card, start:'top bottom', end:'bottom top', scrub:0.6}
+      });
     }
   });
 
